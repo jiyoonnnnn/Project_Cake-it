@@ -1,5 +1,6 @@
 package com.example.jy_cake_it1;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,8 +13,59 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.jy_cake_it1.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
+//public interface DataService {
+//    @GET("/shop/")
+//    Call<List<JSONObject>> getList
+//}
+//public interface ApiService {
+//    @GET("/")
+//    Call<ResponseBody> getRoot();
+//
+//    @POST("/items/")
+//    Call<ResponseBody> createItem(@Body RequestBody requestBody);
+//}
+//    ApiService apiService = retrofit.create(ApiService.class);
+//public class configs extends Application {
+//    private String Url = "http://132.145.80.50:8888/";
+//    private String strPhone = "";
+//}
+
+public class MainActivity extends AppCompatActivity {
+    public interface ApiService {
+        @GET("/")
+        Call<ResponseBody> getRoot();
+
+        @POST("/shop/")
+        Call<ResponseBody> createShop(@Body RequestBody requestBody);
+    }
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://132.145.80.50:8888/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    ApiService apiService = retrofit.create(ApiService.class);
+    Call<ResponseBody> call = apiService.getRoot();
+    call.enqueue(new Callback<ResponseBody>() {
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            // 응답 처리
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            // 에러 처리
+        }
+    });
     private ActivityMainBinding binding;
 
     @Override
