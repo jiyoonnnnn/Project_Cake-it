@@ -10,8 +10,8 @@ import retrofit2.http.POST;
 
 public interface ApiService {
     @GET("/shop/")
-    Call<List<MainActivity.Shop>> getshop();
+    Call<MainActivity.Shop> getName();
 
-    @POST("/shop/")
-    Call<MainActivity.Shop> createShop(@Body RequestBody requestBody);
+//    @POST("/shop/")
+//    Call<MainActivity.Shop> createShop(@Body RequestBody requestBody);
 }
