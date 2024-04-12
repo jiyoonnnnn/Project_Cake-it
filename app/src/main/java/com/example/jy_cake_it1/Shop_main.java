@@ -43,8 +43,10 @@ public class Shop_main extends AppCompatActivity {
             public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
                 if (response.isSuccessful()) {
                     List<Shop> shops = response.body();
+
                     for (Shop shop : shops) {
                         System.out.println("Name: " + shop.getStoreName());
+                        dataTextView.setText("상호명: " + shop.getStoreName());
                         System.out.println("Phone: " + shop.getPhone());
                         System.out.println("Address: " + shop.getStoreAddress());
                         System.out.println("Number: " + shop.getId());
