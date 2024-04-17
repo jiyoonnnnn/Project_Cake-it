@@ -3,17 +3,11 @@ package com.example.jy_cake_it2;
 import com.google.gson.annotations.SerializedName;
 
 public class Shop {
-    @SerializedName("phone")
     private String phone;
-
-    @SerializedName("num")
     private int id;
+    private String name;
 
-    @SerializedName("name")
-    private String storeName;
-
-    @SerializedName("address")
-    private String storeAddress;
+    private String address;
 
     public String getPhone(){
         return phone;
@@ -26,20 +20,20 @@ public class Shop {
     }
 
     public String getStoreName(){
-        return storeName;
+        return name;
     }
     public void setStoreName(String storeName) {
-        this.storeName = storeName;
+        this.name = storeName;
     }
     public String getStoreAddress(){
-        return storeAddress;
+        return address;
     }
     public void setStoreAddress(String storeAddress) {
-        this.storeAddress = storeAddress;
+        this.address = storeAddress;
     }
-    public Shop(String phone, String storeName, String storeAddress) {
+    public Shop(String name, String address, String phone) {
+        this.name = name;
+        this.address = address;
         this.phone = phone;
-        this.storeName = storeName;
-        this.storeAddress = storeAddress;
     }
 }
