@@ -1,8 +1,6 @@
-package com.example.jy_cake_it2;
+package com.example.jy_cake_it2.JY;
 
-import com.google.gson.annotations.SerializedName;
-
-public class Shop {
+public class Login {
     private String phone;
     private int id;
     private String name;
@@ -31,7 +29,7 @@ public class Shop {
     public void setStoreAddress(String storeAddress) {
         this.address = storeAddress;
     }
-    public Shop(String name, String address, String phone) {
+    public Login(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;

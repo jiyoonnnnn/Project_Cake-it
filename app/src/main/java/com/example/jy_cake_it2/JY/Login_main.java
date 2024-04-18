@@ -1,9 +1,6 @@
-package com.example.jy_cake_it2;
+package com.example.jy_cake_it2.JY;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,8 +9,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.jy_cake_it2.R;
+
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,7 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Shop_main extends AppCompatActivity {
+public class Login_main extends AppCompatActivity {
     private TextView dataTextView, dataTextView2, dataTextView3;
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,9 +33,9 @@ public class Shop_main extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ShopApiService service = retrofit.create(ShopApiService.class); // ShopService 대신 ShopApiService 사용
+        LoginApiService service = retrofit.create(LoginApiService.class); // ShopService 대신 ShopApiService 사용
         //        Shop shop = Shop.create(MediaType.parse("application/json"), "{\"key\": \"value\"}");
-        Shop data = new Shop("2312-23-32423", "박지윤케이크", "중앙로13");
+        Login data = new Login("021119", "박지윤케이크", "중앙로13");
         Call<ResponseBody> postCall = service.createPost(data);
         postCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -45,7 +43,6 @@ public class Shop_main extends AppCompatActivity {
                 // 응답 처리
                 dataTextView.setText("code: " + response.code());
                 if (response.isSuccessful()){
-                    dataTextView.setText("code: " + response.code());
                     dataTextView2.setText("Name: " + data.getStoreName());
                     try {
                         String responseData = response.body().string();
@@ -103,15 +100,15 @@ public class Shop_main extends AppCompatActivity {
 //        });
 
 
-            dataTextView = findViewById(R.id.dataTextView);
-            dataTextView2 = findViewById(R.id.dataTextView2);
-            dataTextView3 = findViewById(R.id.dataTextView3);
+        dataTextView = findViewById(R.id.dataTextView);
+        dataTextView2 = findViewById(R.id.dataTextView2);
+        dataTextView3 = findViewById(R.id.dataTextView3);
 
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 //        Button btn1;
 //        btn1 = findViewById(R.id.button1);
 //        btn1.setOnClickListener(new View.OnClickListener() {
