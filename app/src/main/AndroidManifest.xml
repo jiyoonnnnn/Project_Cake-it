@@ -15,6 +15,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".JY.activity_signup"
+            android:exported="false" />
+        <activity
             android:name=".JY.Login_main"
             android:exported="true"
             android:label="JY_Cake_it2">
