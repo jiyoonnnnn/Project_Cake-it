@@ -15,6 +15,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".JY.activity_browse"
+            android:exported="false" />
+        <activity
             android:name=".JY.activity_signup"
             android:exported="false" />
         <activity

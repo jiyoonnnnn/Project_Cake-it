@@ -53,9 +53,8 @@ public class Login_main extends AppCompatActivity {
 
                 // 로그인 요청 데이터 생성
 
-                LoginRequest loginRequest = new LoginRequest(user, pass);
                 // 로그인 요청 보내기
-                Call<ApiResponse> call = service.login(loginRequest);
+                Call<ApiResponse> call = service.login(user, pass);
                 call.enqueue(new Callback<ApiResponse>() {
                     @Override
                     public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -73,6 +72,8 @@ public class Login_main extends AppCompatActivity {
                                 editor.putString("Username", username);
                                 editor.apply(); // 변경사항 적용
                                 Toast.makeText(Login_main.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Login_main.this, activity_browse.class);
+                                startActivity(intent);
                             } else {
                                 // `apiResponse`가 `null`인 경우 처리
                                 Toast.makeText(Login_main.this, "response_body is null", Toast.LENGTH_SHORT).show();
