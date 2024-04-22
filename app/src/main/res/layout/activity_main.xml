@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".JY.Login_main">
 
     <LinearLayout
@@ -16,57 +17,65 @@
         android:layout_marginBottom="30dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_marginBottom="40dp"
+            android:src="@drawable/cakeit_logo" />
+
         <TextView
             android:id="@+id/logintext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="회원 로그인"
+            android:text="로그인"
             android:textStyle="bold"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textAlignment="center"
             android:gravity="center_horizontal" />
 
         <EditText
             android:id="@+id/editID"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-            android:ems="10"
-            android:hint="아이디"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/loginformshape"
+            android:hint="  ID"
             android:inputType="textPersonName"
             android:text="" />
 
         <EditText
             android:id="@+id/editPw"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:ems="10"
-            android:hint="비밀번호"
+            android:background="@drawable/loginformshape"
+            android:hint="  password"
             android:inputType="textPassword" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/buttonshape"
             android:text="로그인"
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="회원가입"
+            android:text="케이킷이 처음이신가요?"
+            android:background="@drawable/signbuttonshape"
+            android:color="@color/light_pink"
             android:textColor="@color/black"
-            android:textSize="13dp"
-            android:textStyle="bold" />
+            android:textSize="13dp" />
 
 
     </LinearLayout>

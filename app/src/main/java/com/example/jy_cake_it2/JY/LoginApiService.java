@@ -13,8 +13,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface LoginApiService {
-//    @GET("shop")
-//    Call<List<Login>> getShops();
+    @GET("api/shop/list")
+    Call<List<Login>> getShops();
     @POST("api/user/create") // POST 요청
     Call<ApiResponse> createAccount(@Body UserAccount user);
     @FormUrlEncoded

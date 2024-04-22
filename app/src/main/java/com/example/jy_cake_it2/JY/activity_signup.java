@@ -126,7 +126,15 @@ public class activity_signup extends AppCompatActivity {
                 });
             }
         });
-
+        TextView btn1;
+        btn1 = findViewById(R.id.back);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_signup.this, Login_main.class);
+                startActivity(intent);
+            }
+        });
 
 
 
