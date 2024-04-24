@@ -1,7 +1,6 @@
 package com.example.jy_cake_it2.JY;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,23 +18,23 @@ import com.example.jy_cake_it2.R;
 
 import java.util.regex.Pattern;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class activity_signup extends AppCompatActivity {
+public class activity_shopsignup extends AppCompatActivity {
+
     TextView back;
-    EditText editName,editPhone,editPw,editPw2,editEmail;
+    EditText editName,editPhone,editPw,editPw2,editEmail,editShopname,editAddress;
     Button pwcheck, btn2;
     private TextView dataTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_shopsignup);
 
         //기입 항목
 
@@ -43,7 +42,9 @@ public class activity_signup extends AppCompatActivity {
         editName = findViewById(R.id.signName);
         editPw=findViewById(R.id.signPW);
         editPw2=findViewById(R.id.signPW2);
-        editPhone=findViewById(R.id.signPhone);
+        editShopname=findViewById(R.id.signShopname);
+        editAddress=findViewById(R.id.signAdress);
+        editPhone=findViewById(R.id.signShopPhone);
         editEmail=findViewById(R.id.signmail);
 
 
@@ -62,7 +63,7 @@ public class activity_signup extends AppCompatActivity {
                 String pw = editPw.getText().toString();
                 String pw2= editPw2.getText().toString();
                 if (!pw.equals(pw2)) {
-                    Toast.makeText(activity_signup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity_shopsignup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
                 } else {
                     pwcheck.setText("일치");
                 }
@@ -73,32 +74,34 @@ public class activity_signup extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity_signup.this, Login_main.class);
+                Intent intent = new Intent(activity_shopsignup.this, LoginShop.class);
                 startActivity(intent);
 
                 String name = editName.getText().toString();
                 String pw = editPw.getText().toString();
                 String pw2= editPw2.getText().toString();
+                String sname= editShopname.getText().toString();
+                String add= editAddress.getText().toString();
                 String phone = editPhone.getText().toString();
                 String email = editEmail.getText().toString();
                 // 이메일 가져온다. 이메일 형식체크
 
                 Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
                 if(pattern.matcher(email).matches() == false){
-                    Toast.makeText(activity_signup.this
+                    Toast.makeText(activity_shopsignup.this
                             , "이메일 형식이 올바르지 않습니다."
                             , Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
-                UserAccount user = new UserAccount(name, pw, pw2, phone, email);
+                ShopAccount shop = new ShopAccount(name, pw, pw2, sname, add, phone, email);
 
-                Call<ApiResponse> postCall = service.createAccount(user);
+                Call<ApiResponse> postCall = service.createShopAccount(shop);
                 postCall.enqueue(new Callback<ApiResponse>() {
                     @Override
                     public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                        Toast.makeText(activity_signup.this, "code: " + response.code() , Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity_shopsignup.this, "code: " + response.code() , Toast.LENGTH_LONG).show();
                         // 응답 처리
                         if (response.isSuccessful()){
 
@@ -131,15 +134,10 @@ public class activity_signup extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity_signup.this, Login_main.class);
+                Intent intent = new Intent(activity_shopsignup.this, LoginShop.class);
                 startActivity(intent);
             }
         });
-
-
-
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

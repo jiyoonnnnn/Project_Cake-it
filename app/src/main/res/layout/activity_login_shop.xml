@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".JY.Login_main">
-
+    tools:context=".JY.LoginShop">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="로그인"
+            android:text="판매자로그인"
             android:textStyle="bold"
             android:textSize="20dp"
             android:textAlignment="center"
@@ -71,7 +70,7 @@
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="케이킷이 처음이신가요?"
+            android:text="판매자회원가입할래?"
             android:background="@drawable/signbuttonshape"
             android:color="@color/light_pink"
             android:textColor="@color/black"
@@ -82,7 +81,7 @@
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="판매자 계정만들기"
+            android:text="사용자 계정만들기"
             android:background="@drawable/signbuttonshape"
             android:color="@color/light_pink"
             android:textColor="@color/black"
@@ -93,7 +92,7 @@
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:text="판매자 로그인하려면 여기로"
+            android:text="사용자 로그인하려면 여기로"
             android:background="@drawable/signbuttonshape"
             android:color="@color/light_pink"
             android:textColor="@color/black"
@@ -101,4 +100,5 @@
 
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
