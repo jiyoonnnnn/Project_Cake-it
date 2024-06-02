@@ -37,14 +37,8 @@ public class activity_browse extends AppCompatActivity {
         setContentView(R.layout.activity_browse);
 
         TextView shopList,shopList2,shopList3;
-//        shopList = findViewById(R.id.browse);
-//        shopList2 = findViewById(R.id.browse2);
-//        shopList3 = findViewById(R.id.browse3);
         NavigationView navigationView;
         Fragment shop_list, design_list;
-//        navigationView = findViewById(R.id.navigationView);
-//        shop_list= new Shop_list();
-//        design_list= new Design_list();
         findViewById(R.id.shoplist).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

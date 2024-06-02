@@ -15,6 +15,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".JY.Detail_Post_Exemple"
+            android:exported="false" />
+        <activity
+            android:name=".JY.bid_user"
+            android:exported="false" />
+        <activity
             android:name=".JY.activity_shopsignup"
             android:exported="false" />
         <activity
