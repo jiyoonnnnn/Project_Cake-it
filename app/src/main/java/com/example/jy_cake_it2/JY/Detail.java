@@ -5,25 +5,27 @@ import java.util.List;
 public class Detail {
     private String subject;
     private String content;
-    private String cakeType;
-    private String cakeShape;
-    private String cakeColor;
-    private String cakeFlavor;
-    private String pickupDate;
+    private String create_date;
+    private User user;
+    private String modify_date;
+    private String cake_type;
+    private String cake_shape;
+    private String cake_color;
+    private String cake_flavor;
+    private String pickup_date;
     private String lettering;
     private int shopId;
 
-    private String modify_date;
 //    private String voter;
 //    public int getId() { return id; }
-    public Detail(String subject, String content, String cakeType, String cakeShape, String cakeColor, String cakeFlavor, String pickupDate, String lettering, int shopId) {
+    public Detail(String subject, String content, String cake_type, String cake_shape, String cake_color, String cake_flavor, String pickup_date, String lettering, int shopId) {
         this.subject = subject;
         this.content = content;
-        this.cakeType = cakeType;
-        this.cakeShape = cakeShape;
-        this.cakeColor = cakeColor;
-        this.cakeFlavor = cakeFlavor;
-        this.pickupDate = pickupDate;
+        this.cake_type = cake_type;
+        this.cake_shape = cake_shape;
+        this.cake_color = cake_color;
+        this.cake_flavor = cake_flavor;
+        this.pickup_date = pickup_date;
         this.lettering = lettering;
         this.shopId = shopId;
     }
@@ -42,45 +44,53 @@ public class Detail {
     public void setContent(String content) {
         this.content = content;
     }
-
+    public String getCreateDate() {
+        return create_date;
+    }
+    public User getUser() {
+        return user;
+    }
+    public String getModifyDate() {
+        return modify_date;
+    }
     public String getCakeType() {
-        return cakeType;
+        return cake_type;
     }
 
-    public void setCakeType(String cakeType) {
-        this.cakeType = cakeType;
+    public void setCakeType(String cake_type) {
+        this.cake_type = cake_type;
     }
 
     public String getCakeShape() {
-        return cakeShape;
+        return cake_shape;
     }
 
-    public void setCakeShape(String cakeShape) {
-        this.cakeShape = cakeShape;
+    public void setCakeShape(String cake_shape) {
+        this.cake_shape = cake_shape;
     }
 
     public String getCakeColor() {
-        return cakeColor;
+        return cake_color;
     }
 
-    public void setCakeColor(String cakeColor) {
-        this.cakeColor = cakeColor;
+    public void setCakeColor(String cake_color) {
+        this.cake_color = cake_color;
     }
 
     public String getCakeFlavor() {
-        return cakeFlavor;
+        return cake_flavor;
     }
 
-    public void setCakeFlavor(String cakeFlavor) {
-        this.cakeFlavor = cakeFlavor;
+    public void setCakeFlavor(String cake_flavor) {
+        this.cake_flavor = cake_flavor;
     }
 
     public String getPickupDate() {
-        return pickupDate;
+        return pickup_date;
     }
 
-    public void setPickupDate(String pickupDate) {
-        this.pickupDate = pickupDate;
+    public void setPickupDate(String pickup_date) {
+        this.pickup_date = pickup_date;
     }
 
     public String getLettering() {

@@ -1,8 +1,10 @@
 package com.example.jy_cake_it2.JY;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,18 +15,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.jy_cake_it2.R;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class Detail_Post_Exemple extends AppCompatActivity {
-
+    private TextView errorTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detail_post_exemple);
+
+        errorTextView = findViewById(R.id.errorTextView);
 
         SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("AccessToken", null);
@@ -33,10 +39,17 @@ public class Detail_Post_Exemple extends AppCompatActivity {
             Retrofit retrofit = RetrofitClient.getClient(accessToken);
             LoginApiService apiService = retrofit.create(LoginApiService.class);
 
-            Detail requestBody = new Detail(
-                    "Cake Order", "Please make a chocolate cake.", "Chocolate", "Round", "Blue", "Vanilla", "2024-05-23", "Happy Birthday", 1
+            Detail detail = new Detail(
+                    "Example Subject",
+                    "Example Content",
+                    "Birthday Cake", "Round",
+                    "Blue",
+                    "Vanilla",
+                    "2024-06-10",
+                    "Happy Birthday",
+                    1
             );
-            Call<Detail> call = apiService.createDetail("Bearer " + accessToken, requestBody);
+            Call<Detail> call = apiService.createDetail("Bearer " + accessToken, detail);
 
             call.enqueue(new Callback<Detail>() {
                 @Override
@@ -47,12 +60,21 @@ public class Detail_Post_Exemple extends AppCompatActivity {
                         if (detailResponse != null) {
                             // 성공 시의 처리 로직
                             Toast.makeText(Detail_Post_Exemple.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Detail_Post_Exemple.this,bid_user.class);
                         } else {
                             Toast.makeText(Detail_Post_Exemple.this, "Response body is null", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         // 응답 실패 처리 로직
-                        Toast.makeText(Detail_Post_Exemple.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Detail_Post_Exemple.this, "Fail:"+response.code(), Toast.LENGTH_SHORT).show();
+                        try {
+                            // 서버가 반환한 오류 메시지 확인
+                            String errorBody = response.errorBody().string();
+                            Toast.makeText(Detail_Post_Exemple.this, "Error message: " + errorBody, Toast.LENGTH_LONG).show();
+                            errorTextView.setText(errorBody);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

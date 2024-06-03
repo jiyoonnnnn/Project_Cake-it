@@ -28,6 +28,14 @@ public class bid_user extends AppCompatActivity {
     private TextView contentTextView;
     private TextView createDateTextView;
     private TextView userTextView;
+    private TextView modifyDateTextView;
+    private TextView typeTextView;
+    private TextView shapeTextView;
+    private TextView colorTextView;
+    private TextView flavorTextView;
+    private TextView pickupDateTextView;
+    private TextView letteringTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,13 @@ public class bid_user extends AppCompatActivity {
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
         userTextView = findViewById(R.id.userTextView);
+        modifyDateTextView = findViewById(R.id.modifyDateTextView);
+        typeTextView = findViewById(R.id.typeTextView);
+        shapeTextView = findViewById(R.id.shapeTextView);
+        colorTextView = findViewById(R.id.colorTextView);
+        flavorTextView = findViewById(R.id.flavorTextView);
+        pickupDateTextView = findViewById(R.id.pickupDateTextView);
+        letteringTextView = findViewById(R.id.letteringTextView);
 
         int question_id = 3;
 
@@ -64,8 +79,17 @@ public class bid_user extends AppCompatActivity {
             public void onResponse(Call<Detail> call, Response<Detail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Detail orderDetail = response.body();
-                    subjectTextView.setText(orderDetail.getSubject());
-                    contentTextView.setText(orderDetail.getContent());
+                    subjectTextView.setText("subject : " + orderDetail.getSubject());
+                    contentTextView.setText("content : " + orderDetail.getContent());
+                    createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
+                    userTextView.setText("username : " + orderDetail.getUser().getUsername());
+                    modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
+                    typeTextView.setText("cake_type : " + orderDetail.getCakeType());
+                    shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
+                    colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
+                    flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
+                    pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
+                    letteringTextView.setText("lettering : " + orderDetail.getLettering());
 
                 } else if (response.code() == 307) {
                     // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
