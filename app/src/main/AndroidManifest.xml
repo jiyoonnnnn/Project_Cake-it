@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -15,10 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
-            android:name=".JY.Detail_Post_Exemple"
+            android:name=".JY.AI_image_generate"
             android:exported="false" />
         <activity
-            android:name=".JY.bid_user"
+            android:name=".JY.activity_set_reservation"
+            android:exported="false" />
+        <activity
+            android:name=".JY.activity_draw_cake"
             android:exported="false" />
         <activity
             android:name=".JY.activity_shopsignup"
@@ -38,7 +42,6 @@
             android:label="JY_Cake_it2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

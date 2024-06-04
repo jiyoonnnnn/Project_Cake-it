@@ -97,6 +97,17 @@
             android:color="@color/light_pink"
             android:textColor="@color/black"
             android:textSize="13dp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="케이크 그리기"
+            android:background="@drawable/signbuttonshape"
+            android:color="@color/light_pink"
+            android:textColor="@color/black"
+            android:textSize="13dp" />
 
 
     </LinearLayout>

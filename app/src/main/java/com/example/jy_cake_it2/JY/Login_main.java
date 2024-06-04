@@ -191,6 +191,15 @@ public class Login_main extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button btn4;
+        btn4 = findViewById(R.id.button4);
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login_main.this, activity_draw_cake.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

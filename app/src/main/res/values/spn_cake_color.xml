@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cake_color">
+        <item>흰색</item>
+        <item>빨강</item>
+        <item>핑크</item>
+        <item>파랑</item>
+        <item>노랑</item>
+        <item>검정</item>
+    </string-array>
+</resources>
