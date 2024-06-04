@@ -69,7 +69,7 @@ public class Shop_list extends Fragment {
                     ShopAdapter.OnItemClickListener clickListener = new ShopAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Shop shop) {
-                            Intent intent = new Intent(getActivity(),bid_user.class);
+                            Intent intent = new Intent(getActivity(),Detail_Post_Exemple.class);
                             // 다른 페이지로 전달할 데이터가 있다면 여기에 추가
                             startActivity(intent);
                         }

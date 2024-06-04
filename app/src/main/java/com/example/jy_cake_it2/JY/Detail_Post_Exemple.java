@@ -42,7 +42,8 @@ public class Detail_Post_Exemple extends AppCompatActivity {
             Detail detail = new Detail(
                     "Example Subject",
                     "Example Content",
-                    "Birthday Cake", "Round",
+                    "Birthday Cake",
+                    "Round",
                     "Blue",
                     "Vanilla",
                     "2024-06-10",
@@ -56,14 +57,15 @@ public class Detail_Post_Exemple extends AppCompatActivity {
                 public void onResponse(Call<Detail> call, Response<Detail> response) {
                     if (response.isSuccessful()) {
                         // 응답 성공 처리 로직
-                        Detail detailResponse = response.body();
-                        if (detailResponse != null) {
+//                        Detail detailResponse = response.body();
+//                        if (detailResponse != null) {
                             // 성공 시의 처리 로직
                             Toast.makeText(Detail_Post_Exemple.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Detail_Post_Exemple.this,bid_user.class);
-                        } else {
-                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null", Toast.LENGTH_SHORT).show();
-                        }
+                        startActivity(intent);
+//                        } else {
+//                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null"+response.code(), Toast.LENGTH_SHORT).show();
+//                        }
                     } else {
                         // 응답 실패 처리 로직
                         Toast.makeText(Detail_Post_Exemple.this, "Fail:"+response.code(), Toast.LENGTH_SHORT).show();

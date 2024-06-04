@@ -14,11 +14,11 @@ public class Detail {
     private String cake_flavor;
     private String pickup_date;
     private String lettering;
-    private int shopId;
+    private int shop_id;
 
 //    private String voter;
 //    public int getId() { return id; }
-    public Detail(String subject, String content, String cake_type, String cake_shape, String cake_color, String cake_flavor, String pickup_date, String lettering, int shopId) {
+    public Detail(String subject, String content, String cake_type, String cake_shape, String cake_color, String cake_flavor, String pickup_date, String lettering, int shop_id) {
         this.subject = subject;
         this.content = content;
         this.cake_type = cake_type;
@@ -27,7 +27,7 @@ public class Detail {
         this.cake_flavor = cake_flavor;
         this.pickup_date = pickup_date;
         this.lettering = lettering;
-        this.shopId = shopId;
+        this.shop_id = shop_id;
     }
     public String getSubject() {
         return subject;
@@ -102,11 +102,11 @@ public class Detail {
     }
 
     public int getShopId() {
-        return shopId;
+        return shop_id;
     }
 
-    public void setShopId(int shopId) {
-        this.shopId = shopId;
+    public void setShopId(int shop_id) {
+        this.shop_id = shop_id;
     }
 }
 
