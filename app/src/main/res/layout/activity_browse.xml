@@ -52,12 +52,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/shoplist"
-                android:layout_width="111dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:text="                  업체목록"
+                android:text="업체목록"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -68,21 +68,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:text=" 디자인 목록"
+                android:text="지도보기"
                 android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
-<!--        <TextView-->
-<!--            android:id="@+id/browse"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:textAlignment="center"-->
-<!--            android:text="업체목록     디자인 목록"-->
-<!--            android:textSize="20dp"-->
-<!--            android:textStyle="bold"-->
-<!--            />-->
 
 
         <FrameLayout

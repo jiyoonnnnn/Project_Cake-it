@@ -1,5 +1,6 @@
 package com.example.jy_cake_it2.JY;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,19 +31,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class activity_browse extends AppCompatActivity {
     private final int Fragment_1 = 1;
     private final int Fragment_2 = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_browse);
-
-        TextView shopList,shopList2,shopList3;
+        TextView shoplist = findViewById(R.id.shoplist);
+        TextView designlist = findViewById(R.id.designlist);
         NavigationView navigationView;
         Fragment shop_list, design_list;
         findViewById(R.id.shoplist).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                shoplist.setTextColor(Color.parseColor("#000000"));
+                designlist.setTextColor(Color.parseColor("#FFFFFF"));
+                출처: https://kanzler.tistory.com/248 [kanzler의 세상 이야기:티스토리]
                 FragmentView(Fragment_1);
 
             }
@@ -51,6 +55,8 @@ public class activity_browse extends AppCompatActivity {
         findViewById(R.id.designlist).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                shoplist.setTextColor(Color.parseColor("#FFFFFF"));
+                designlist.setTextColor(Color.parseColor("#000000"));
                 FragmentView(Fragment_2);
 
 
