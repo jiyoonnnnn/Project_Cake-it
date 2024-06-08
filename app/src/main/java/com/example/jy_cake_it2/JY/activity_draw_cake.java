@@ -52,16 +52,12 @@ public class activity_draw_cake extends AppCompatActivity {
             public void onClick(View view) {
                 // 주문하기 버튼 클릭 이벤트 처리
                 // 이미지, 각 스피너에 있는 데이터들 모아놨다 마지막에 전송 + 케이크 이미지 가져오기
-                String subject = "Example Subject";
-                String content = "Example Content";
                 String cake_type = "1호";
                 String cake_shape = spnShape.getSelectedItem().toString();
                 String cake_color = spnColor.getSelectedItem().toString();
                 String cake_flavor = "초코시트";
                 String lettering = spnLettering.getSelectedItem().toString();
                 Intent intent = new Intent(activity_draw_cake.this, activity_set_reservation.class);
-                intent.putExtra("subject", subject);
-                intent.putExtra("content", content);
                 intent.putExtra("cake_type", cake_type);
                 intent.putExtra("cake_shape", cake_shape);
                 intent.putExtra("cake_color", cake_color);

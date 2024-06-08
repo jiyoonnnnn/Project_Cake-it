@@ -3,6 +3,7 @@ package com.example.jy_cake_it2.JY;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class bid_user extends AppCompatActivity {
+    private TextView idTextView;
     private TextView subjectTextView;
     private TextView contentTextView;
     private TextView createDateTextView;
@@ -31,6 +33,7 @@ public class bid_user extends AppCompatActivity {
     private TextView flavorTextView;
     private TextView pickupDateTextView;
     private TextView letteringTextView;
+    private int question_id;
 
 
     @Override
@@ -39,6 +42,7 @@ public class bid_user extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_bid_user);
 
+        idTextView = findViewById(R.id.idTextView);
         subjectTextView = findViewById(R.id.subjectTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
@@ -51,9 +55,8 @@ public class bid_user extends AppCompatActivity {
         pickupDateTextView = findViewById(R.id.pickupDateTextView);
         letteringTextView = findViewById(R.id.letteringTextView);
 
-        int question_id = 30;
-
-
+        Intent intent = getIntent();
+        question_id = intent.getIntExtra("DETAIL_ID", -1);
 
         fetchOrderDetail(question_id);
     }

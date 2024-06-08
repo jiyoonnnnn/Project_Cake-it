@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 public class activity_browse extends AppCompatActivity {
     private final int Fragment_1 = 1;
     private final int Fragment_2 = 2;
-
+    private int question_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +30,11 @@ public class activity_browse extends AppCompatActivity {
         TextView designlist = findViewById(R.id.designlist);
         NavigationView navigationView;
         Fragment shop_list, design_list;
+
+        Intent intent = getIntent();
+        int detailId = intent.getIntExtra("DETAIL_ID", -1);
+
+
         findViewById(R.id.shoplist).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +71,13 @@ public class activity_browse extends AppCompatActivity {
         switch (fragment){
             case 1:
                 // 첫번 째 프래그먼트 호출
+
+
+
                 Shop_list fragment1 = new Shop_list();
+                Bundle bundle = new Bundle();
+                bundle.putInt("DETAIL_ID", question_id);
+                fragment1.setArguments(bundle);
                 transaction.replace(R.id.fragment_container, fragment1);
                 transaction.commit();
                 break;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -54,6 +55,7 @@ public class activity_set_reservation extends AppCompatActivity {
     Button btn_auction, btn_find_store;
     TimePicker set_time;
     DatePicker set_year;
+    private int detailId;
     ImageView cake_image;
 
     @Override
@@ -70,6 +72,7 @@ public class activity_set_reservation extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         //케이크 이미지 (이전 페이지에서 설정한것) (DB에서 가져오기 or 이전 페이지에서 받아오기)
         cake_image = findViewById(R.id.cake_image);
@@ -109,10 +112,11 @@ public class activity_set_reservation extends AppCompatActivity {
                 int min = set_time.getMinute();
 
                 String pickup_date = String.format("%04d-%02d-%02d %02d:%02d", year, month, day, hour, min);
-
+                EditText editsubject = findViewById(R.id.editID);
+                EditText editcontent = findViewById(R.id.editPw);
                 Intent intent = getIntent();
-                String subject = intent.getStringExtra("subject");
-                String content = intent.getStringExtra("content");
+                String subject = editsubject.getText().toString();
+                String content = editcontent.getText().toString();
                 String cake_type = intent.getStringExtra("cake_type");
                 String cake_shape = intent.getStringExtra("cake_shape");
                 String cake_color = intent.getStringExtra("cake_color");
@@ -135,8 +139,11 @@ public class activity_set_reservation extends AppCompatActivity {
 //                        Detail detailResponse = response.body();
 //                        if (detailResponse != null) {
                                 // 성공 시의 처리 로직
+                                Detail detail = response.body();
+                                int detailId = detail.getId();
                                 Toast.makeText(activity_set_reservation.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(activity_set_reservation.this, activity_browse.class);
+                                intent.putExtra("DETAIL_ID", detailId);
                                 startActivity(intent);
 //                        } else {
 //                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null"+response.code(), Toast.LENGTH_SHORT).show();
@@ -165,10 +172,14 @@ public class activity_set_reservation extends AppCompatActivity {
                     Toast.makeText(activity_set_reservation.this, "No Access Token found", Toast.LENGTH_SHORT).show();
                 }
 
+
                 // Retrofit을 통해 서버로 데이터 전송
 //                if (year >= 2024 && 7 < hour && hour < 20){
 //                    sendReservationDataToServer(cake_image, year, month, day, hour, min);
 //                }
+            }
+            public int getDetailId() {
+                return detailId;
             }
         });
 

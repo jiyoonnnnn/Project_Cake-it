@@ -1,6 +1,5 @@
 package com.example.jy_cake_it2.JY;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

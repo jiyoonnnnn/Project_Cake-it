@@ -3,6 +3,7 @@ package com.example.jy_cake_it2.JY;
 import java.util.List;
 
 public class Detail {
+    private int id;
     private String subject;
     private String content;
     private String create_date;
@@ -17,7 +18,8 @@ public class Detail {
     private int shop_id;
 
 //    private String voter;
-//    public int getId() { return id; }
+    public int getId() { return id; }
+
     public Detail(String subject, String content, String cake_type, String cake_shape, String cake_color, String cake_flavor, String pickup_date, String lettering, int shop_id) {
         this.subject = subject;
         this.content = content;
