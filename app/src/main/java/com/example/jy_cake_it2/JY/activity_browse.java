@@ -83,7 +83,7 @@ public class activity_browse extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity_browse.this, Login_main.class);
+                Intent intent = new Intent(activity_browse.this, activity_set_reservation.class);
                 startActivity(intent);
             }
         });

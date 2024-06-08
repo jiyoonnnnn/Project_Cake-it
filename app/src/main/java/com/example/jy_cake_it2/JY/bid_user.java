@@ -51,7 +51,7 @@ public class bid_user extends AppCompatActivity {
         pickupDateTextView = findViewById(R.id.pickupDateTextView);
         letteringTextView = findViewById(R.id.letteringTextView);
 
-        int question_id = 22;
+        int question_id = 30;
 
 
 

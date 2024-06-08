@@ -71,7 +71,7 @@ public class Login_main extends AppCompatActivity {
                                 editor.putString("Username", username);
                                 editor.apply(); // 변경사항 적용
                                 Toast.makeText(Login_main.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Login_main.this, activity_browse.class);
+                                Intent intent = new Intent(Login_main.this, activity_draw_cake.class);
                                 startActivity(intent);
                             } else {
                                 // `apiResponse`가 `null`인 경우 처리

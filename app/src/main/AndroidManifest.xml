@@ -21,6 +21,12 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="c78ktzoog4" />
         <activity
+            android:name=".JY.activity_set_reservation"
+            android:exported="false" />
+        <activity
+            android:name=".JY.activity_draw_cake"
+            android:exported="false" />
+        <activity
             android:name=".JY.shop_order"
             android:exported="false" />
         <activity
