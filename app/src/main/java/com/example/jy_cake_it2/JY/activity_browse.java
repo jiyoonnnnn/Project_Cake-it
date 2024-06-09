@@ -31,8 +31,8 @@ public class activity_browse extends AppCompatActivity {
         NavigationView navigationView;
         Fragment shop_list, design_list;
 
-        Intent intent = getIntent();
-        int detailId = intent.getIntExtra("DETAIL_ID", -1);
+//        Intent intent = getIntent();
+//        int detailId = intent.getIntExtra("DETAIL_ID", -1);
 
 
         findViewById(R.id.shoplist).setOnClickListener(new View.OnClickListener() {
@@ -75,9 +75,9 @@ public class activity_browse extends AppCompatActivity {
 
 
                 Shop_list fragment1 = new Shop_list();
-                Bundle bundle = new Bundle();
-                bundle.putInt("DETAIL_ID", question_id);
-                fragment1.setArguments(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("DETAIL_ID", question_id);
+//                fragment1.setArguments(bundle);
                 transaction.replace(R.id.fragment_container, fragment1);
                 transaction.commit();
                 break;

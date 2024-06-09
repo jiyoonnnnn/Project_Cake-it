@@ -140,10 +140,10 @@ public class activity_set_reservation extends AppCompatActivity {
 //                        if (detailResponse != null) {
                                 // 성공 시의 처리 로직
                                 Detail detail = response.body();
-                                int detailId = detail.getId();
+//                                int detailId = detail.getId();
                                 Toast.makeText(activity_set_reservation.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(activity_set_reservation.this, activity_browse.class);
-                                intent.putExtra("DETAIL_ID", detailId);
+//                                intent.putExtra("DETAIL_ID", detailId);
                                 startActivity(intent);
 //                        } else {
 //                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null"+response.code(), Toast.LENGTH_SHORT).show();

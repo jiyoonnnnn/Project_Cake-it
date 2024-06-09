@@ -30,41 +30,24 @@ import retrofit2.Retrofit;
 public class Shop_list extends Fragment {
     private RecyclerView recyclerView;
     private ShopAdapter shopAdapter;
-    private List<Shop> shopList;
     private int question_id;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         setHasOptionsMenu(true);
-//        return inflater.inflate(R.layout.fragment_shop_list, container, false);
-        TextView shopList, shopList2, shopList3;
-//        shopList = findViewById(R.id.browse);
-
         View rootView = inflater.inflate(R.layout.fragment_shop_list, container, false);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        if (getArguments() != null) {
-            question_id = getArguments().getInt("DETAIL_ID", -1);
-        } else {
-            question_id = -1; // or handle the case when arguments are null
-        }
-
-        shopAdapter = new ShopAdapter(new ArrayList<Shop>(), new ShopAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Shop shop) {
-                updateShopDetail(shop.getId());
-            }
-        });
+        shopAdapter = new ShopAdapter(new ArrayList<>(), this::updateShopDetail);
         recyclerView.setAdapter(shopAdapter);
-        // 가게 목록을 가져와서 어댑터에 연결
+
         fetchShopList();
 
         return rootView;
     }
+
     private void fetchShopList() {
         LoginApiService apiService = RetrofitClient.getApiService();
         Call<ApiResponse> call = apiService.getShops();
@@ -74,16 +57,7 @@ public class Shop_list extends Fragment {
                 if (response.isSuccessful()) {
                     ApiResponse apiResponse = response.body();
                     List<Shop> shops = apiResponse.getShop_list();
-                    ShopAdapter.OnItemClickListener clickListener = new ShopAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Shop shop) {
-
-                            updateShopDetail(shop.getId());
-
-                        }
-                    };
-                    shopAdapter = new ShopAdapter(shops, clickListener);
-                    recyclerView.setAdapter(shopAdapter);
+                    shopAdapter.updateShops(shops);
                 } else {
                     Toast.makeText(requireContext(), "Failed to fetch shops", Toast.LENGTH_SHORT).show();
                 }
@@ -95,9 +69,9 @@ public class Shop_list extends Fragment {
             }
         });
     }
-    private void updateShopDetail(int shop_id) {
 
-        UpdateRequest updateRequest = new UpdateRequest(question_id, shop_id);
+    private void updateShopDetail(Shop shop) {
+        int shop_id = shop.getId();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("AccessToken", null);
@@ -105,31 +79,60 @@ public class Shop_list extends Fragment {
         if (accessToken != null) {
             Retrofit retrofit = RetrofitClient.getClient(accessToken);
             LoginApiService apiService = retrofit.create(LoginApiService.class);
-
-            Call<UpdateRequest> call = apiService.updateShop("Bearer " + accessToken, updateRequest);
-            call.enqueue(new Callback<UpdateRequest>() {
+            Call<ApiResponse> call = apiService.getUserOrders("Bearer " + accessToken);
+            call.enqueue(new Callback<ApiResponse>() {
                 @Override
-                public void onResponse(Call<UpdateRequest> call, Response<UpdateRequest> response) {
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Shop updated successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), bid_user.class);
-                        intent.putExtra("DETAIL_ID", question_id);
-                        // 다른 페이지로 전달할 데이터가 있다면 여기에 추가
-                        startActivity(intent);
+                        ApiResponse apiResponse = response.body();
+                        if (apiResponse != null && apiResponse.getOrder_list() != null && !apiResponse.getOrder_list().isEmpty()) {
+                            question_id = apiResponse.getOrder_list().get(0).getId();
+
+                            UpdateRequest updateRequest = new UpdateRequest(question_id, shop_id);
+                            updateShop(accessToken, updateRequest);
+                        } else {
+                            Toast.makeText(getContext(), "No orders found", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(getContext(), "Failed to update shop", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Failed to fetch orders", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<UpdateRequest> call, Throwable t) {
-                    Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error fetching orders: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             Toast.makeText(getActivity(), "No Access Token found", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void updateShop(String accessToken, UpdateRequest updateRequest) {
+        Retrofit retrofit = RetrofitClient.getClient(accessToken);
+        LoginApiService apiService = retrofit.create(LoginApiService.class);
+
+        Call<UpdateRequest> call = apiService.updateShop("Bearer " + accessToken, updateRequest);
+        call.enqueue(new Callback<UpdateRequest>() {
+            @Override
+            public void onResponse(Call<UpdateRequest> call, Response<UpdateRequest> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Shop updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), bid_user.class);
+                    intent.putExtra("DETAIL_ID", updateRequest.getQuestionId());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "업데이트 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateRequest> call, Throwable t) {
+                Toast.makeText(getContext(), "네트워크 오류", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
