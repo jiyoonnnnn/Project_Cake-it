@@ -70,7 +70,7 @@ public class LoginShop extends AppCompatActivity {
                                 editor.putString("Username", username);
                                 editor.apply(); // 변경사항 적용
                                 Toast.makeText(LoginShop.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginShop.this, activity_browse.class);
+                                Intent intent = new Intent(LoginShop.this, shop_order.class);
                                 startActivity(intent);
                             } else {
                                 // `apiResponse`가 `null`인 경우 처리
@@ -120,15 +120,6 @@ public class LoginShop extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginShop.this, Login_main.class);
-                startActivity(intent);
-            }
-        });
-        Button btn4;
-        btn4 = findViewById(R.id.button4);
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginShop.this, activity_draw_cake.class);
                 startActivity(intent);
             }
         });

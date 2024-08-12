@@ -15,15 +15,26 @@ public class ApiResponse {
     private String shopname;
     @SerializedName("id")
     private int id;
+    @SerializedName("shopdetail")
+    private String shopdetail;
     @SerializedName("shop_list")
     private List<Shop> shop_list;
+    @SerializedName("question_list")
+    private List<Detail> question_list;
     public String getAccessToken() {
         return accessToken;
     }
     public List<Shop> getShop_list() {
         return shop_list;
     }
+    public List<Detail> getOrder_list() {
+        return question_list;
+    }
     public int getId() { return id; }
+//    public String user(int id, String username){
+//        this.id = id;
+//        this.username = username;
+//    }
     public String getShopname() {
         return this.shopname;
     }

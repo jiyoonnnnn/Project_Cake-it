@@ -1,82 +1,111 @@
 package com.example.jy_cake_it2.JY;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.example.jy_cake_it2.R;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.jy_cake_it2.R;
+import com.google.android.material.navigation.NavigationView;
 
 public class activity_browse extends AppCompatActivity {
-
+    private final int Fragment_1 = 1;
+    private final int Fragment_2 = 2;
+    private int question_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_browse);
+        TextView shoplist = findViewById(R.id.shoplist);
+        TextView designlist = findViewById(R.id.designlist);
+        NavigationView navigationView;
+        Fragment shop_list, design_list;
 
-        TextView shopList,shopList2,shopList3;
-        shopList = findViewById(R.id.browse);
-        shopList2 = findViewById(R.id.browse2);
-        shopList3 = findViewById(R.id.browse3);
+//        Intent intent = getIntent();
+//        int detailId = intent.getIntExtra("DETAIL_ID", -1);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://132.145.80.50:9999/") // 기본 URL만 입력
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        LoginApiService service = retrofit.create(LoginApiService.class);
 
-        Call<ApiResponse> call = service.getShops();
-        call.enqueue(new Callback<ApiResponse>() {
+        findViewById(R.id.shoplist).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                shopList2.setText("code = " + response.code());
-                if (response.isSuccessful()) {
-//                    shopList3.setText(response.body());
+            public void onClick(View view) {
+                shoplist.setTextColor(Color.parseColor("#000000"));
+                designlist.setTextColor(Color.parseColor("#FFFFFF"));
+                FragmentView(Fragment_1);
 
-                    ApiResponse apiResponse = response.body();
-                    List<Shop> shops = apiResponse.getShop_list();
-                    for (Shop shop : shops) {
-//                        shopList3.setText(shop.toString());
-
-
-//                            shopList3.setText("번호: " + shops.getShop_list() + "\n");
-
-                        String content = "";
-                        content += "번호: " + shop.getId() + "\n";
-                        content += "상호명: " + shop.getShopname() + "\n";
-                        content += "사장님: " + shop.getUsername() + "\n";
-
-
-                        shopList.append(content);
-
-                    }
-                } else {
-                    Toast.makeText(activity_browse.this, "망해따", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Toast.makeText(activity_browse.this, "Failed to fetch shops", Toast.LENGTH_SHORT).show();
-                shopList3.setText(t.getMessage());
             }
         });
+
+        findViewById(R.id.designlist).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shoplist.setTextColor(Color.parseColor("#FFFFFF"));
+                designlist.setTextColor(Color.parseColor("#000000"));
+                FragmentView(Fragment_2);
+
+
+            }
+        });
+        FragmentView(Fragment_1);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+    }
+    private void FragmentView(int fragment){
+
+        //FragmentTransactiom를 이용해 프래그먼트를 사용합니다.
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        switch (fragment){
+            case 1:
+                // 첫번 째 프래그먼트 호출
+
+
+
+                Shop_list fragment1 = new Shop_list();
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("DETAIL_ID", question_id);
+//                fragment1.setArguments(bundle);
+                transaction.replace(R.id.fragment_container, fragment1);
+                transaction.commit();
+                break;
+
+            case 2:
+                // 두번 째 프래그먼트 호출
+                Design_list fragment2 = new Design_list();
+                transaction.replace(R.id.fragment_container, fragment2);
+                transaction.commit();
+                break;
+        }
+        TextView btn1;
+        btn1 = findViewById(R.id.back);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_browse.this, activity_set_reservation.class);
+                startActivity(intent);
+            }
+        });
+        TextView btn2;
+        btn2 = findViewById(R.id.myOrder);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_browse.this, user_order.class);
+                startActivity(intent);
+            }
         });
     }
 }

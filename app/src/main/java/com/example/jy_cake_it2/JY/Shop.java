@@ -20,9 +20,9 @@ public class Shop {
         this.shopname = shopname;
         this.address = address;
     }
-    @Override
-    public String toString() {
-        return "Shop{username=" + username + ", shopname=" + shopname +", address=" + address + "}";
-    }
+//    @Override
+//    public String toString() {
+//        return "Shop{username=" + username + ", shopname=" + shopname +", address=" + address + "}";
+//    }
 
 }

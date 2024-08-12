@@ -7,5 +7,7 @@
         />
     <size
         android:width="100dp"
-        android:height="100dp"/> <!-- 원의 크기 -->
+        android:height="100dp"/>
+    <solid
+    android:color="@color/white"/> <!-- 원의 크기 -->
 </shape>

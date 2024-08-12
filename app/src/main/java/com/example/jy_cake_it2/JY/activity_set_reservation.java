@@ -1,21 +1,19 @@
 package com.example.jy_cake_it2.JY;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.jy_cake_it2.R;
 
@@ -57,6 +55,7 @@ public class activity_set_reservation extends AppCompatActivity {
     Button btn_auction, btn_find_store;
     TimePicker set_time;
     DatePicker set_year;
+    private int detailId;
     ImageView cake_image;
 
     @Override
@@ -64,12 +63,26 @@ public class activity_set_reservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cake_calendar);
 
+        TextView btn1;
+        btn1 = findViewById(R.id.back);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_set_reservation.this, activity_draw_cake.class);
+                startActivity(intent);
+            }
+        });
+
+
         //케이크 이미지 (이전 페이지에서 설정한것) (DB에서 가져오기 or 이전 페이지에서 받아오기)
         cake_image = findViewById(R.id.cake_image);
-        cake_image.setImageResource(R.drawable.cake_test);
+  //      cake_image.setImageResource(R.drawable.cake_test);
 
         set_year = findViewById(R.id.set_year);
         set_time = findViewById(R.id.set_time);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("AccessToken", null);
 
         //버튼 경매로 or 가게 둘러보기 페이지로 이동 + date, timepicker 에서 선택한 변수 케이크 도안이랑 같이 보내기
         btn_auction = findViewById(R.id.btn_auction);
@@ -93,15 +106,80 @@ public class activity_set_reservation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int year = set_year.getYear();
-                int month = set_year.getMonth();
+                int month = set_year.getMonth() + 1;
                 int day = set_year.getDayOfMonth();
                 int hour = set_time.getHour();
                 int min = set_time.getMinute();
 
-                // Retrofit을 통해 서버로 데이터 전송
-                if (year >= 2024 && 7 < hour && hour < 20){
-                    sendReservationDataToServer(cake_image, year, month, day, hour, min);
+                String pickup_date = String.format("%04d-%02d-%02d %02d:%02d", year, month, day, hour, min);
+                EditText editsubject = findViewById(R.id.editID);
+                EditText editcontent = findViewById(R.id.editPw);
+                Intent intent = getIntent();
+                String subject = editsubject.getText().toString();
+                String content = editcontent.getText().toString();
+                String cake_type = intent.getStringExtra("cake_type");
+                String cake_shape = intent.getStringExtra("cake_shape");
+                String cake_color = intent.getStringExtra("cake_color");
+                String cake_flavor = intent.getStringExtra("cake_flavor");
+                String lettering = intent.getStringExtra("lettering");
+                int shop_id = 6;
+
+                if (accessToken != null) {
+                    Retrofit retrofit = RetrofitClient.getClient(accessToken);
+                    LoginApiService apiService = retrofit.create(LoginApiService.class);
+
+                    Detail detail = new Detail(subject, content, cake_type, cake_shape, cake_color, cake_flavor, pickup_date, lettering, shop_id);
+
+                    Call<Detail> call = apiService.createDetail("Bearer " + accessToken, detail);
+                    call.enqueue(new Callback<Detail>() {
+                        @Override
+                        public void onResponse(Call<Detail> call, Response<Detail> response) {
+                            if (response.isSuccessful()) {
+                                // 응답 성공 처리 로직
+//                        Detail detailResponse = response.body();
+//                        if (detailResponse != null) {
+                                // 성공 시의 처리 로직
+                                Detail detail = response.body();
+//                                int detailId = detail.getId();
+                                Toast.makeText(activity_set_reservation.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(activity_set_reservation.this, activity_browse.class);
+//                                intent.putExtra("DETAIL_ID", detailId);
+                                startActivity(intent);
+//                        } else {
+//                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null"+response.code(), Toast.LENGTH_SHORT).show();
+//                        }
+                            } else {
+                                // 응답 실패 처리 로직
+                                Toast.makeText(activity_set_reservation.this, "Fail:"+response.code(), Toast.LENGTH_SHORT).show();
+//                                try {
+//                                    // 서버가 반환한 오류 메시지 확인
+////                                    String errorBody = response.errorBody().string();
+//                                    Toast.makeText(activity_draw_cake.this, "Error message: ", Toast.LENGTH_LONG).show();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Detail> call, Throwable t) {
+                            // 네트워크 실패 처리 로직
+                            Toast.makeText(activity_set_reservation.this, "Network error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(activity_set_reservation.this, "No Access Token found", Toast.LENGTH_SHORT).show();
                 }
+
+
+                // Retrofit을 통해 서버로 데이터 전송
+//                if (year >= 2024 && 7 < hour && hour < 20){
+//                    sendReservationDataToServer(cake_image, year, month, day, hour, min);
+//                }
+            }
+            public int getDetailId() {
+                return detailId;
             }
         });
 

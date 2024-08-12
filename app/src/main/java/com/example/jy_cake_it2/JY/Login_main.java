@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,7 +71,7 @@ public class Login_main extends AppCompatActivity {
                                 editor.putString("Username", username);
                                 editor.apply(); // 변경사항 적용
                                 Toast.makeText(Login_main.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Login_main.this, activity_browse.class);
+                                Intent intent = new Intent(Login_main.this, activity_draw_cake.class);
                                 startActivity(intent);
                             } else {
                                 // `apiResponse`가 `null`인 경우 처리
@@ -188,15 +187,6 @@ public class Login_main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login_main.this, LoginShop.class);
-                startActivity(intent);
-            }
-        });
-        Button btn4;
-        btn4 = findViewById(R.id.button4);
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Login_main.this, activity_draw_cake.class);
                 startActivity(intent);
             }
         });
