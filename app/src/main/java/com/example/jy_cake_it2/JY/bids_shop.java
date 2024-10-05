@@ -2,9 +2,11 @@ package com.example.jy_cake_it2.JY;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jy_cake_it2.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +101,29 @@ public class bids_shop extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Toast.makeText(bids_shop.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_shopPage) {
+                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    return true;
+                } else if (id == R.id.nav_bid_list) {
+                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    return true;
+                } else if (id == R.id.nav_order) {
+                    startActivity(new Intent(bids_shop.this, shop_order.class));
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    return true;
+                }
+                return false;
             }
         });
     }
