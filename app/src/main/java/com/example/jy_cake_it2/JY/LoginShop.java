@@ -70,7 +70,7 @@ public class LoginShop extends AppCompatActivity {
                                 editor.putString("Username", username);
                                 editor.apply(); // 변경사항 적용
                                 Toast.makeText(LoginShop.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginShop.this, shop_order.class);
+                                Intent intent = new Intent(LoginShop.this, bids_shop.class);
                                 startActivity(intent);
                             } else {
                                 // `apiResponse`가 `null`인 경우 처리

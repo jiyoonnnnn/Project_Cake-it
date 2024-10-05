@@ -9,7 +9,7 @@
     tools:context=".JY.activity_draw_cake">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:gravity="center">
         <TextView
             android:id="@+id/back"
@@ -51,7 +51,7 @@
         <DatePicker
             android:id="@+id/set_year"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="130dp"
             android:calendarViewShown="false"
             android:datePickerMode="spinner"
             android:startYear="2024"/>
@@ -60,7 +60,7 @@
         <TimePicker
             android:id="@+id/set_time"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="130dp"
             android:timePickerMode="spinner" />
         <EditText
             android:id="@+id/editID"
@@ -103,5 +103,6 @@
             android:layout_height="wrap_content"
             android:text="가게 선택"
             android:backgroundTint="@color/light_pink"/>
+
     </LinearLayout>
 </LinearLayout>

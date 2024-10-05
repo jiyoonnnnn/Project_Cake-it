@@ -1,5 +1,7 @@
 package com.example.jy_cake_it2.JY;
 
+import com.google.android.gms.common.api.Api;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,4 +37,8 @@ public interface LoginApiService {
     @FormUrlEncoded
     @POST("api/shop/login")
     Call<ApiResponse> shoplogin(@Field("username") String username, @Field("password") String password); // 폼 필드로 전송
+    @POST("api/bid/create/{question_id}")
+    Call<ApiResponse> createBid(@Header("Authorization") String authHeader, @Path("question_id") int question_id, @Body Bids bids);
+    @GET("api/order/list")
+    Call<ApiResponse> getOrderList();
 }

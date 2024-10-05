@@ -13,7 +13,7 @@ public class Shop {
     public String getAddress() { return address; }
     public String getUsername() { return username; }
     public String getShopname() {
-        return this.shopname;
+        return shopname;
     }
     public Shop(String username, String shopname, String address) {
         this.username = username;

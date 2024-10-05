@@ -7,6 +7,7 @@ public class Detail {
     private String subject;
     private String content;
     private String create_date;
+    private List<Bids> answers;
     private User user;
     private String modify_date;
     private String cake_type;
@@ -16,6 +17,8 @@ public class Detail {
     private String pickup_date;
     private String lettering;
     private int shop_id;
+    private int order_status;
+    private String status_msg;
 
 //    private String voter;
     public int getId() { return id; }
@@ -48,6 +51,9 @@ public class Detail {
     }
     public String getCreateDate() {
         return create_date;
+    }
+    public List<Bids> getAnswers() {
+        return answers;
     }
     public User getUser() {
         return user;
@@ -109,6 +115,13 @@ public class Detail {
 
     public void setShopId(int shop_id) {
         this.shop_id = shop_id;
+    }
+    public int getOrderStatus() {
+        return order_status;
+    }
+
+    public void setOrderStatus(int order_status) {
+        this.order_status = order_status;
     }
 }
 
