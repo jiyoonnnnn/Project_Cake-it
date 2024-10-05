@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_shopPage"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="가게페이지" />
+    <item
+        android:id="@+id/nav_bid_list"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="입찰" />
+    <item
+        android:id="@+id/nav_order"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="가게 주문" />
+
+    <item
+        android:id="@+id/nav_mypage"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="마이페이지" />
+</menu>
