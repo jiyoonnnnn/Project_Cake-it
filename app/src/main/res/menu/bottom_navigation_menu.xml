@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/nav_draw_cake"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:title="디자인" />
+    <item
+        android:id="@+id/nav_browse"
         android:enabled="true"
         android:icon="@drawable/baseline_add_shopping_cart_24"
         android:title="둘러보기" />
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/nav_order"
         android:enabled="true"
         android:icon="@drawable/baseline_add_shopping_cart_24"
         android:title="주문내역" />
     <item
-        android:id="@+id/page_3"
-        android:enabled="true"
-        android:icon="@drawable/baseline_add_shopping_cart_24"
-        android:title="홈" />
-    <item
-        android:id="@+id/page_4"
-        android:enabled="true"
-        android:icon="@drawable/baseline_add_shopping_cart_24"
-        android:title="찜" />
-    <item
-        android:id="@+id/page_5"
+        android:id="@+id/nav_mypage"
         android:enabled="true"
         android:icon="@drawable/baseline_add_shopping_cart_24"
         android:title="마이페이지" />

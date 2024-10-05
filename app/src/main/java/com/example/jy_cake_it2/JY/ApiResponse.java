@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ApiResponse {
+    private boolean success;    // 성공 여부
+    private String message;     // 서버의 응답 메시지
     @SerializedName("access_token") // JSON 필드 이름과 매핑
     private String accessToken;
     @SerializedName("token_type")
@@ -30,6 +32,7 @@ public class ApiResponse {
     public List<Detail> getOrder_list() {
         return question_list;
     }
+
     public int getId() { return id; }
 //    public String user(int id, String username){
 //        this.id = id;
@@ -49,4 +52,19 @@ public class ApiResponse {
     public String getUsername() { return username; }
 
     public void setUsername(String username) { this.username = username; }
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

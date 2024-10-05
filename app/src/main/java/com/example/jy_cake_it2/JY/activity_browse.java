@@ -3,10 +3,12 @@ package com.example.jy_cake_it2.JY;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.jy_cake_it2.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class activity_browse extends AppCompatActivity {
@@ -105,6 +108,34 @@ public class activity_browse extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(activity_browse.this, user_order.class);
                 startActivity(intent);
+            }
+        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_draw_cake) {
+//                switch (item.getItemId()) {
+//                    case R.id.nav_draw_cake:
+                    startActivity(new Intent(activity_browse.this, activity_draw_cake.class));
+                    return true;
+                } else if (id == R.id.nav_browse) {
+//                    case R.id.nav_browse:
+                    startActivity(new Intent(activity_browse.this, activity_browse.class));
+                    return true;
+                } else if (id == R.id.nav_order) {
+//                    case R.id.nav_order:
+                    startActivity(new Intent(activity_browse.this, user_order.class));
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+//                    case R.id.nav_mypage:
+                    startActivity(new Intent(activity_browse.this, user_order.class));
+                    return true;
+                }
+                return false;
             }
         });
     }

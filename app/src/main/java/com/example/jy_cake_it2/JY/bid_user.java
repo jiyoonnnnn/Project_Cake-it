@@ -1,18 +1,28 @@
 package com.example.jy_cake_it2.JY;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jy_cake_it2.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,95 +31,28 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class bid_user extends AppCompatActivity {
-    private TextView idTextView;
-    private TextView subjectTextView;
-    private TextView contentTextView;
-    private TextView createDateTextView;
-    private TextView userTextView;
-    private TextView modifyDateTextView;
-    private TextView typeTextView;
-    private TextView shapeTextView;
-    private TextView colorTextView;
-    private TextView flavorTextView;
-    private TextView pickupDateTextView;
-    private TextView letteringTextView;
-    private int question_id;
-
+    private RecyclerView recyclerView;
+    private OrderAdapter orderAdapter;
+    private List<Detail> questionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_bid_user);
 
-        idTextView = findViewById(R.id.idTextView);
-        subjectTextView = findViewById(R.id.subjectTextView);
-        contentTextView = findViewById(R.id.contentTextView);
-        createDateTextView = findViewById(R.id.createDateTextView);
-        userTextView = findViewById(R.id.userTextView);
-        modifyDateTextView = findViewById(R.id.modifyDateTextView);
-        typeTextView = findViewById(R.id.typeTextView);
-        shapeTextView = findViewById(R.id.shapeTextView);
-        colorTextView = findViewById(R.id.colorTextView);
-        flavorTextView = findViewById(R.id.flavorTextView);
-        pickupDateTextView = findViewById(R.id.pickupDateTextView);
-        letteringTextView = findViewById(R.id.letteringTextView);
+        recyclerView = findViewById(R.id.recyclerViewOrders);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Intent intent = getIntent();
-        question_id = intent.getIntExtra("DETAIL_ID", -1);
-
-        fetchOrderDetail(question_id);
-    }
-    private void fetchOrderDetail(int question_id) {
-        Gson gson = new GsonBuilder()
-                .setLenient() // This allows lenient parsing of JSON
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://132.145.80.50:9999/") // 실제 API의 베이스 URL로 변경하세요
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        LoginApiService apiService = retrofit.create(LoginApiService.class);
-
-        Call<Detail> call = apiService.getDetail(question_id);
-        call.enqueue(new Callback<Detail>() {
+        // 어댑터 초기화 - 빈 리스트로 설정
+        orderAdapter = new OrderAdapter(new ArrayList<>(), new OrderAdapter.OnItemClickListener() {
             @Override
-            public void onResponse(Call<Detail> call, Response<Detail> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Detail orderDetail = response.body();
-                    subjectTextView.setText("subject : " + orderDetail.getSubject());
-                    contentTextView.setText("content : " + orderDetail.getContent());
-                    createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
-                    userTextView.setText("username : " + orderDetail.getUser().getUsername());
-                    modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
-                    typeTextView.setText("cake_type : " + orderDetail.getCakeType());
-                    shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
-                    colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
-                    flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
-                    pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
-                    letteringTextView.setText("lettering : " + orderDetail.getLettering());
-
-                } else if (response.code() == 307) {
-                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
-                    String newLocation = response.raw().header("Location");
-                    if (newLocation != null) {
-                        // 새로운 위치로 재시도
-                        // newLocation에 있는 URL로 다시 요청을 보내야 합니다.
-                        subjectTextView.setText("Temporary redirect to: " + newLocation);
-                    } else {
-                        // 새로운 위치가 제공되지 않은 경우에 대한 처리
-                        subjectTextView.setText("Temporary redirect, but no new location provided");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Detail> call, Throwable t) {
-                Toast.makeText( bid_user.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onItemClick(Detail detail) {
+                // 클릭 시 주문 세부사항으로 이동
+                Intent intent = new Intent(bid_user.this, Bid_user_detail.class);
+                intent.putExtra("ORDER_ID", detail.getId());
+                startActivity(intent);
             }
         });
-
         TextView btn1;
         btn1 = findViewById(R.id.back);
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -119,5 +62,65 @@ public class bid_user extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//        orderAdapter = new OrderAdapter(new ArrayList<>(), new OrderAdapter.OnItemClickListener());
+        recyclerView.setAdapter(orderAdapter);
+        fetchQuestions();
+        // Sample data
+//        questionList = new ArrayList<>();
+//
+//        // Set up adapter
+//        questionAdapter = new OrderAdapter(questionList, new OrderAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Detail detail) {
+//                // Handle item click
+//                // 예를 들어, 클릭 시 주문 세부사항 화면으로 이동
+//                 Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
+//                 intent.putExtra("ORDER_ID", detail.getId());
+//                 startActivity(intent);
+//            }
+//        });
+//
+//        recyclerView.setAdapter(questionAdapter);
+    }
+    private void fetchQuestions() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("AccessToken", null);
+
+        if (accessToken != null) {
+            Retrofit retrofit = RetrofitClient.getClient(accessToken);
+            LoginApiService apiService = retrofit.create(LoginApiService.class);
+            Call<ApiResponse> call = apiService.getUserOrders("Bearer " + accessToken);
+
+            call.enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                    Toast.makeText(bid_user.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                    if (response.isSuccessful() && response.body() != null) {
+                        ApiResponse questionList = response.body();
+                        List<Detail> orders = questionList.getOrder_list();
+                        orderAdapter.updateOrders(orders);
+                        // RecyclerView에 데이터 설정
+//                    orderAdapter = new OrderAdapter(orders, new OrderAdapter.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(Detail detail) {
+//                            // 클릭 시 처리
+//                            // 예를 들어 주문 세부사항으로 이동
+//                             Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
+//                             intent.putExtra("ORDER_ID", detail.getId());
+//                             startActivity(intent);
+//                        }
+//                    });
+//                    recyclerView.setAdapter(orderAdapter);
+                    } else {
+                        Toast.makeText(bid_user.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Toast.makeText(bid_user.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

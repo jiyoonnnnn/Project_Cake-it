@@ -80,17 +80,18 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="526dp"
             android:layout_weight="1">
 
 
         </FrameLayout>
 
     </LinearLayout>
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/bottom_navigation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:menu="@menu/bottom_navigation_menu" />-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        app:labelVisibilityMode="labeled"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

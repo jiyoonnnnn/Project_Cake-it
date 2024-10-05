@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.jy_cake_it2.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class activity_draw_cake extends AppCompatActivity {
 
@@ -222,6 +225,34 @@ public class activity_draw_cake extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 // 아무것도 선택되지 않았을 때 처리할 내용
+            }
+        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_draw_cake) {
+//                switch (item.getItemId()) {
+//                    case R.id.nav_draw_cake:
+                    startActivity(new Intent(activity_draw_cake.this, activity_draw_cake.class));
+                    return true;
+                } else if (id == R.id.nav_browse) {
+//                    case R.id.nav_browse:
+                    startActivity(new Intent(activity_draw_cake.this, activity_browse.class));
+                    return true;
+                } else if (id == R.id.nav_order) {
+//                    case R.id.nav_order:
+                    startActivity(new Intent(activity_draw_cake.this, bid_user.class));
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+//                    case R.id.nav_mypage:
+                    startActivity(new Intent(activity_draw_cake.this, user_order.class));
+                    return true;
+                }
+                return false;
             }
         });
     }
