@@ -24,7 +24,11 @@ public class BidsAdapter extends RecyclerView.Adapter<BidsAdapter.BidViewHolder>
     public interface OnItemClickListener {
         void onItemClick(Bids bid);
     }
-
+    public int getItemHeight(ViewGroup parent) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.bids_item, parent, false);
+        itemView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        return itemView.getMeasuredHeight();
+    }
     public BidsAdapter(List<Bids> bidsList, OnItemClickListener itemClickListener) {
         this.bidsList = bidsList;
         this.itemClickListener = itemClickListener;

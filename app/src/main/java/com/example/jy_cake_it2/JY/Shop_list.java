@@ -118,7 +118,7 @@ public class Shop_list extends Fragment {
             public void onResponse(Call<UpdateRequest> call, Response<UpdateRequest> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Shop updated successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), bid_user.class);
+                    Intent intent = new Intent(getActivity(), user_order.class);
                     intent.putExtra("DETAIL_ID", updateRequest.getQuestionId());
                     startActivity(intent);
                 } else {

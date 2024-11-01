@@ -38,9 +38,9 @@ public class Shop_order_detail extends AppCompatActivity {
     private TextView colorTextView;
     private TextView flavorTextView;
     private TextView pickupDateTextView;
-    private TextView letteringTextView;
-    private int question_id;
-    Button btn_bids;
+    private TextView letteringTextView, statusTextView;
+    private int question_id, statusCode;;
+    Button btn_accept, btn_deny, btn_wait, btn_finish, btn_end;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +53,23 @@ public class Shop_order_detail extends AppCompatActivity {
             return insets;
         });
 
-        idTextView = findViewById(R.id.idTextView);
-        subjectTextView = findViewById(R.id.subjectTextView);
+        //idTextView = findViewById(R.id.idTextView);
+        //subjectTextView = findViewById(R.id.subjectTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
         userTextView = findViewById(R.id.userTextView);
-        modifyDateTextView = findViewById(R.id.modifyDateTextView);
         typeTextView = findViewById(R.id.typeTextView);
         shapeTextView = findViewById(R.id.shapeTextView);
         colorTextView = findViewById(R.id.colorTextView);
         flavorTextView = findViewById(R.id.flavorTextView);
         pickupDateTextView = findViewById(R.id.pickupDateTextView);
+        statusTextView = findViewById(R.id.statusTextView);
         letteringTextView = findViewById(R.id.letteringTextView);
+        btn_accept = findViewById(R.id.btn_accept);
+        btn_deny = findViewById(R.id.btn_deny);
+        btn_wait = findViewById(R.id.btn_wait);
+        btn_finish = findViewById(R.id.btn_finish);
+        btn_end = findViewById(R.id.btn_end);
 
         Intent intent = getIntent();
         question_id = intent.getIntExtra("ORDER_ID", -1);
@@ -90,11 +95,11 @@ public class Shop_order_detail extends AppCompatActivity {
             public void onResponse(Call<Detail> call, Response<Detail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Detail orderDetail = response.body();
-                    subjectTextView.setText("subject : " + orderDetail.getSubject());
+                    statusCode = orderDetail.getOrderStatus();
+                    //subjectTextView.setText("subject : " + orderDetail.getSubject());
                     contentTextView.setText("content : " + orderDetail.getContent());
                     createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
                     userTextView.setText("username : " + orderDetail.getUser().getUsername());
-                    modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
                     typeTextView.setText("cake_type : " + orderDetail.getCakeType());
                     shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
                     colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
@@ -102,6 +107,7 @@ public class Shop_order_detail extends AppCompatActivity {
                     pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
                     letteringTextView.setText("lettering : " + orderDetail.getLettering());
 
+                    setButtonVisibility(statusCode);
                 } else if (response.code() == 307) {
                     // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
                     String newLocation = response.raw().header("Location");
@@ -123,54 +129,198 @@ public class Shop_order_detail extends AppCompatActivity {
         });
         SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("AccessToken", null);
-        btn_bids = findViewById(R.id.bidButton);
-        btn_bids.setOnClickListener(new View.OnClickListener() {
+        btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                EditText bidContent = findViewById(R.id.btn_content);
-                EditText bidComment = findViewById(R.id.btn_comment);
-                // EditText의 입력값을 문자열로 가져온 후 int로 변환
-                String inputText = bidContent.getText().toString();
-
-                // 만약 EditText에 값이 없으면 기본값을 0으로 설정
-                int content = inputText.isEmpty() ? 0 : Integer.parseInt(inputText);
-                String comment = bidComment.getText().toString();
-
 
 //상태를 30으로변경해야함 코드는 bid_user_detail에 있음
 
                 if (accessToken != null) {
                     Retrofit retrofit = RetrofitClient.getClient(accessToken);
                     LoginApiService apiService = retrofit.create(LoginApiService.class);
-                    Bids bids = new Bids(content, comment);
-                    Call<ApiResponse> call = apiService.createBid("Bearer " + accessToken, question_id, bids);
+                    OrderRequest orderRequest = new OrderRequest(question_id);
+                    Call<Detail> call = apiService.orderAccept("Bearer " + accessToken, orderRequest);
 
-                    call.enqueue(new Callback<ApiResponse>() {
+                    call.enqueue(new Callback<Detail>() {
                         @Override
-                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                        public void onResponse(Call<Detail> call, Response<Detail> response) {
                             Toast.makeText(Shop_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
-                            if (response.isSuccessful() && response.body() != null) {
+                            if (response.isSuccessful() ) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(Shop_order_detail.this, "성공! ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Shop_order_detail.this, "주문수락! ", Toast.LENGTH_LONG).show();
                                 } else if (response.code() == 400) {
                                     // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
-                                    Toast.makeText(Shop_order_detail.this, "이미 입찰된 주문입니다. ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Shop_order_detail.this, "오류 ", Toast.LENGTH_LONG).show();
                                 }
                             }else{
-                                Toast.makeText(Shop_order_detail.this, "실패! ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Shop_order_detail.this, "완전오류 ", Toast.LENGTH_LONG).show();
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<ApiResponse> call, Throwable t) {
+                        public void onFailure(Call<Detail> call, Throwable t) {
                             Toast.makeText(Shop_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
         });
+        btn_deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+//상태를 30으로변경해야함 코드는 bid_user_detail에 있음
+
+                if (accessToken != null) {
+                    Retrofit retrofit = RetrofitClient.getClient(accessToken);
+                    LoginApiService apiService = retrofit.create(LoginApiService.class);
+                    OrderRequest orderRequest = new OrderRequest(question_id);
+                    Call<Detail> call = apiService.orderDeny("Bearer " + accessToken, orderRequest);
+
+                    call.enqueue(new Callback<Detail>() {
+                        @Override
+                        public void onResponse(Call<Detail> call, Response<Detail> response) {
+                            Toast.makeText(Shop_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful() ) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(Shop_order_detail.this, "주문거절! ", Toast.LENGTH_LONG).show();
+                                } else if (response.code() == 400) {
+                                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
+                                    Toast.makeText(Shop_order_detail.this, "오류 ", Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(Shop_order_detail.this, "완전오류 ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Detail> call, Throwable t) {
+                            Toast.makeText(Shop_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+        btn_wait.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (accessToken != null) {
+                    Retrofit retrofit = RetrofitClient.getClient(accessToken);
+                    LoginApiService apiService = retrofit.create(LoginApiService.class);
+                    ChangeStatus changeStatus1 = new ChangeStatus(question_id, 30);
+                    Call<ChangeStatus> call = apiService.changeStatus("Bearer " + accessToken, changeStatus1);
+
+                    call.enqueue(new Callback<ChangeStatus>() {
+                        @Override
+                        public void onResponse(Call<ChangeStatus> call, Response<ChangeStatus> response) {
+                            Toast.makeText(Shop_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(Shop_order_detail.this, "케이크 제작중으로 변경! ", Toast.LENGTH_LONG).show();
+                                } else if (response.code() == 400) {
+                                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
+                                    Toast.makeText(Shop_order_detail.this, "오류 ", Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(Shop_order_detail.this, "완전오류 ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChangeStatus> call, Throwable t) {
+                            Toast.makeText(Shop_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+        btn_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//상태를 30으로변경해야함 코드는 bid_user_detail에 있음
+
+                if (accessToken != null) {
+                    Retrofit retrofit = RetrofitClient.getClient(accessToken);
+                    LoginApiService apiService = retrofit.create(LoginApiService.class);
+                    ChangeStatus changeStatus2 = new ChangeStatus(question_id, 31);
+                    Call<ChangeStatus> call = apiService.changeStatus("Bearer " + accessToken, changeStatus2);
+
+                    call.enqueue(new Callback<ChangeStatus>() {
+                        @Override
+                        public void onResponse(Call<ChangeStatus> call, Response<ChangeStatus> response) {
+                            Toast.makeText(Shop_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(Shop_order_detail.this, "제작완료로 변경! ", Toast.LENGTH_LONG).show();
+                                } else if (response.code() == 400) {
+                                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
+                                    Toast.makeText(Shop_order_detail.this, "오류 ", Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(Shop_order_detail.this, "완전오류 ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChangeStatus> call, Throwable t) {
+                            Toast.makeText(Shop_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+        btn_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//상태를 30으로변경해야함 코드는 bid_user_detail에 있음
+
+                if (accessToken != null) {
+                    Retrofit retrofit = RetrofitClient.getClient(accessToken);
+                    LoginApiService apiService = retrofit.create(LoginApiService.class);
+                    ChangeStatus changeStatus1 = new ChangeStatus(question_id, 32);
+                    Call<ChangeStatus> call = apiService.changeStatus("Bearer " + accessToken, changeStatus1);
+
+                    call.enqueue(new Callback<ChangeStatus>() {
+                        @Override
+                        public void onResponse(Call<ChangeStatus> call, Response<ChangeStatus> response) {
+                            Toast.makeText(Shop_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(Shop_order_detail.this, "픽업완료로 변경! ", Toast.LENGTH_LONG).show();
+                                } else if (response.code() == 400) {
+                                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
+                                    Toast.makeText(Shop_order_detail.this, "오류 ", Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(Shop_order_detail.this, "완전오류 ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChangeStatus> call, Throwable t) {
+                            Toast.makeText(Shop_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
     }
-
+    private void setButtonVisibility(int statusCode) {
+        if (statusCode == 10) {
+            btn_accept.setVisibility(View.VISIBLE);
+            btn_deny.setVisibility(View.VISIBLE);
+            btn_wait.setVisibility(View.GONE);
+            btn_finish.setVisibility(View.GONE);
+            btn_end.setVisibility(View.GONE);
+        } else {
+            btn_accept.setVisibility(View.GONE);
+            btn_deny.setVisibility(View.GONE);
+            btn_wait.setVisibility(View.VISIBLE);
+            btn_finish.setVisibility(View.VISIBLE);
+            btn_end.setVisibility(View.VISIBLE);
+        }
+    }
 }

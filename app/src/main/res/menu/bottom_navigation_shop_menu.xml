@@ -3,12 +3,12 @@
     <item
         android:id="@+id/nav_shopPage"
         android:enabled="true"
-        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:icon="@drawable/home"
         android:title="가게페이지" />
     <item
         android:id="@+id/nav_bid_list"
         android:enabled="true"
-        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:icon="@drawable/bid"
         android:title="입찰" />
     <item
         android:id="@+id/nav_order"
@@ -19,6 +19,6 @@
     <item
         android:id="@+id/nav_mypage"
         android:enabled="true"
-        android:icon="@drawable/baseline_add_shopping_cart_24"
+        android:icon="@drawable/person"
         android:title="마이페이지" />
 </menu>

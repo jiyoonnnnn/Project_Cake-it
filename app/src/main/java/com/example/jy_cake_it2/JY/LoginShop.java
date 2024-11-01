@@ -105,15 +105,7 @@ public class LoginShop extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button btn2;
-        btn2 = findViewById(R.id.button2);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginShop.this, activity_signup.class);
-                startActivity(intent);
-            }
-        });
+
         Button btn3;
         btn3 = findViewById(R.id.button3);
         btn3.setOnClickListener(new View.OnClickListener() {

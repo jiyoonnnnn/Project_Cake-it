@@ -35,6 +35,7 @@ public class bids_shop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bids_shop);
 
+
         recyclerView = findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -93,7 +94,13 @@ public class bids_shop extends AppCompatActivity {
             }
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (view, insets) -> {
+            // 하단 네비게이션 바 높이만큼 패딩 적용
+            int bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+            bottomNavigationView.setPadding(0, 0, 0, bottomInset);
+            return insets;
+        });
+        bottomNavigationView.setSelectedItemId(R.id.nav_bid_list);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -101,15 +108,19 @@ public class bids_shop extends AppCompatActivity {
 
                 if (id == R.id.nav_shopPage) {
                     startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_bid_list) {
                     startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_order) {
                     startActivity(new Intent(bids_shop.this, shop_order.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_mypage) {
                     startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    finish();
                     return true;
                 }
                 return false;

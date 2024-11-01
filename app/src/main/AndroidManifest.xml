@@ -23,13 +23,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".JY.MainActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_main2" />
+        <activity
             android:name=".JY.Shop_order_detail"
             android:exported="false" />
         <activity
             android:name=".JY.Bid_shop_detail"
             android:exported="false" />
         <activity
-            android:name=".JY.Bid_user_detail"
+            android:name=".JY.user_order_detail"
             android:exported="false" />
         <activity
             android:name=".JY.bids_shop"

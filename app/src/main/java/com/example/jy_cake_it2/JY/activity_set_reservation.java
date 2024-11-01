@@ -99,19 +99,18 @@ public class activity_set_reservation extends AppCompatActivity {
 //                int min = set_time.getMinute();
 //
 //                String pickup_date = String.format("%04d-%02d-%02d %02d:%02d", year, month, day, hour, min);
-//                EditText editsubject = findViewById(R.id.editID);
 //                EditText editcontent = findViewById(R.id.editPw);
 //                Intent intent = getIntent();
 //
-// //               String subject = editsubject.getText().toString();
-// //               String content = editcontent.getText().toString();
-// //               String cake_type = intent.getStringExtra("cake_type");
-// //               String cake_shape = intent.getStringExtra("cake_shape");
-// //               String cake_color = intent.getStringExtra("cake_color");
-// //               String cake_flavor = intent.getStringExtra("cake_flavor");
-// //               String lettering = intent.getStringExtra("lettering");
-// //               int shop_id = 0;
-//                RequestBody subject = RequestBody.create(MediaType.parse("multipart/form-data"), editsubject.getText().toString());
+//                String content = editcontent.getText().toString();
+//                String cake_type = intent.getStringExtra("cake_type");
+//                String cake_shape = intent.getStringExtra("cake_shape");
+//                String cake_color = intent.getStringExtra("cake_color");
+//                String cake_flavor = intent.getStringExtra("cake_flavor");
+//                String lettering = intent.getStringExtra("lettering");
+//                String editsubject = cake_type + "/" + cake_shape + "/" + cake_flavor;
+//                int shop_id = 0;
+//                RequestBody subject = RequestBody.create(MediaType.parse("multipart/form-data"), editsubject;
 //                RequestBody content = RequestBody.create(MediaType.parse("multipart/form-data"), editcontent.getText().toString());
 //                RequestBody cakeType = RequestBody.create(MediaType.parse("multipart/form-data"), intent.getStringExtra("cake_type"));
 //                RequestBody cakeShape = RequestBody.create(MediaType.parse("multipart/form-data"), intent.getStringExtra("cake_shape"));

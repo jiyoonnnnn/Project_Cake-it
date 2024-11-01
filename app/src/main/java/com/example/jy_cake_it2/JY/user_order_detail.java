@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Bid_user_detail extends AppCompatActivity {
+public class user_order_detail extends AppCompatActivity {
     private TextView idTextView, subjectTextView, contentTextView, createDateTextView;
     private RecyclerView recyclerView;
     private BidsAdapter bidsAdapter;
@@ -49,17 +51,17 @@ public class Bid_user_detail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_bid_user_detail);
+        setContentView(R.layout.activity_user_order_detail);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        TextView btn1 = findViewById(R.id.back);
+        TextView btn1 = findViewById(R.id.paymentButton);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Bid_user_detail.this, activity_browse.class);
+                Intent intent = new Intent(user_order_detail.this, activity_browse.class);
                 startActivity(intent);
             }
         });
@@ -83,7 +85,8 @@ public class Bid_user_detail extends AppCompatActivity {
         // RecyclerView 초기화 및 어댑터 설정
         recyclerView = findViewById(R.id.answerRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
         // 초기 어댑터 설정 (빈 리스트로 시작)
         bidsAdapter = new BidsAdapter(bidsList, new BidsAdapter.OnItemClickListener() {
             @Override
@@ -108,10 +111,14 @@ public class Bid_user_detail extends AppCompatActivity {
         builder.setView(dialogView);
 
         TextView dialogShopName = dialogView.findViewById(R.id.dialog_shop_name);
+        TextView dialogPrice = dialogView.findViewById(R.id.dialog_price);
+        TextView dialogComment = dialogView.findViewById(R.id.dialog_comment);
         Button confirmButton = dialogView.findViewById(R.id.dialog_confirm_button);
-        Button cancelButton = dialogView.findViewById(R.id.dialog_cancel_button);
+        TextView cancelButton = dialogView.findViewById(R.id.dialog_cancel_button);
 
-        dialogShopName.setText("Shop Name: " + bid.getShop().getShopname());
+        dialogShopName.setText("가게명: " + bid.getShop().getShopname());
+        dialogPrice.setText("입찰 금액: " + bid.getContent());
+        dialogComment.setText("입찰 한 마디: " + bid.getComment());
         AlertDialog dialog = builder.create();
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -146,15 +153,15 @@ public class Bid_user_detail extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<SelectShop> call, Response<SelectShop> response) {
                     if (response.isSuccessful() ) {
-                        Toast.makeText(Bid_user_detail.this, "Confirmed bid from " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(user_order_detail.this, "Confirmed bid from " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
 //                        handleChangeStatus(question_id);
                     }else {
-                        Toast.makeText(Bid_user_detail.this, "실패" + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(user_order_detail.this, "실패" + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<SelectShop> call, Throwable t) {
-                    Toast.makeText(Bid_user_detail.this, "실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(user_order_detail.this, "실패", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -209,6 +216,13 @@ public class Bid_user_detail extends AppCompatActivity {
                     // 입찰 리스트 업데이트
                     List<Bids> bids = orderDetail.getAnswers();
                     bidsAdapter.updateBids(bids); // 어댑터에 새로운 데이터 제공
+                    int itemCount = bids.size();
+                    int itemHeight = bidsAdapter.getItemHeight(recyclerView); // 각 항목의 높이
+                    int totalHeight = itemHeight * itemCount;
+
+                    ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+                    params.height = totalHeight;
+                    recyclerView.setLayoutParams(params);
 
                     userTextView.setText("username : " + orderDetail.getUser().getUsername());
                     modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
@@ -237,7 +251,7 @@ public class Bid_user_detail extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Detail> call, Throwable t) {
-                Toast.makeText(Bid_user_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(user_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -259,13 +273,13 @@ public class Bid_user_detail extends AppCompatActivity {
                     //Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                     cakeImage.setImageBitmap(bitmap);
                 } else {
-                    Toast.makeText(Bid_user_detail.this, "이미지를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(user_order_detail.this, "이미지를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Bid_user_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(user_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

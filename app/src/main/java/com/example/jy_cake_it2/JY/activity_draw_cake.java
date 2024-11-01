@@ -16,9 +16,14 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.jy_cake_it2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +43,8 @@ public class activity_draw_cake extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_cake);
+        //WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        //EdgeToEdge.enable(this);
 
         // TextView 초기화
         mainText1 = findViewById(R.id.main_text1);
@@ -286,6 +293,11 @@ public class activity_draw_cake extends AppCompatActivity {
                 }
                 return false;
             }
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
     }
 }

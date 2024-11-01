@@ -2,26 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:layout_marginLeft="15dp">
 
+    <!-- 상단 영역: 상점 이름과 닫기 버튼 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 상점 이름 -->
+        <TextView
+            android:id="@+id/dialog_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop Name"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- 닫기 버튼 -->
+        <TextView
+            android:id="@+id/dialog_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 다이얼로그 내용 -->
     <TextView
-        android:id="@+id/dialog_shop_name"
+        android:id="@+id/dialog_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shop Name"
+        android:text="입찰 금액"
         android:textSize="18sp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="5dp" />
 
-    <Button
+    <TextView
+        android:id="@+id/dialog_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="입찰 한 마디"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- 확인 버튼 -->
+<!--    <Button-->
+<!--        android:id="@+id/dialog_confirm_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Confirm" />-->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dialog_confirm_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Confirm" />
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:background="@drawable/buttonshape"
+        android:text="낙찰"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/dialog_cancel_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
 </LinearLayout>

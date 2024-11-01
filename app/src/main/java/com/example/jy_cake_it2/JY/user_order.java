@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,7 +35,7 @@ public class user_order extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_order);
 
         recyclerView = findViewById(R.id.recyclerViewOrders);
@@ -48,7 +46,7 @@ public class user_order extends AppCompatActivity {
             @Override
             public void onItemClick(Detail detail) {
                 // 클릭 시 주문 세부사항으로 이동
-                Intent intent = new Intent(user_order.this, Bid_user_detail.class);
+                Intent intent = new Intent(user_order.this, user_order_detail.class);
                 intent.putExtra("ORDER_ID", detail.getId());
                 startActivity(intent);
             }
@@ -72,12 +70,13 @@ public class user_order extends AppCompatActivity {
 //        });
 //
 //        recyclerView.setAdapter(questionAdapter);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_order);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

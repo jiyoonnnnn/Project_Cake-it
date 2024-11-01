@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JY.Bid_user_detail">
+    tools:context=".JY.user_order_detail">
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -19,18 +19,11 @@
         >
 
         <TextView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.3"
-            android:text="  back"
-            android:textSize="20dp" />
 
-        <TextView
-
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
             android:text="주문 관리"
             android:textSize="25dp" />
     </LinearLayout>
@@ -170,13 +163,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/answerRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
 <!--                android:fadingEdge="none"-->
 <!--                android:scrollbars="vertical"/>-->
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signupbutton"
+                android:id="@+id/paymentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_marginTop="10dp"

@@ -61,18 +61,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.QuestionView
 //            tvContent = view.findViewById(R.id.tvContent);
 //            tvCreateDate = view.findViewById(R.id.tvCreateDate);
             orderName = view.findViewById(R.id.order_name);
-            orderCreateDate = view.findViewById(R.id.order_pickup_date);
+            orderCreateDate = view.findViewById(R.id.order_Create_date);
             orderStatus = view.findViewById(R.id.order_status);
         }
 
         public void bind(final Detail detail, final OnItemClickListener listener) {
             orderName.setText(detail.getSubject());
-            orderCreateDate.setText(detail.getPickupDate());
+            orderCreateDate.setText(detail.getCreateDate());
 
             if (detail.getOrderStatus() == 20)
                 orderStatus.setText("입찰진행중");
-            else
+            else if (detail.getOrderStatus() == 10)
                 orderStatus.setText("주문접수");
+            else if (detail.getOrderStatus() == 11)
+                orderStatus.setText("주문 수락");
+            else if (detail.getOrderStatus() == 12)
+                orderStatus.setText("주문 거절");
+            else if (detail.getOrderStatus() == 33)
+                orderStatus.setText("입금대기중");
+            else if (detail.getOrderStatus() == 30)
+                orderStatus.setText("케이크 제작중");
+            else if (detail.getOrderStatus() == 31)
+                orderStatus.setText("제작 완료(픽업 대기)");
+            else if (detail.getOrderStatus() == 32)
+                orderStatus.setText("픽업 완료");
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -63,4 +63,8 @@ public interface LoginApiService {
     Call<SelectShop> selectShop(@Header("Authorization") String authHeader, @Body SelectShop request);
     @PUT("api/order/status")
     Call<ChangeStatus> changeStatus(@Header("Authorization") String authHeader, @Body ChangeStatus request);
+    @PUT("api/order/accept")
+    Call<Detail> orderAccept(@Header("Authorization") String authHeader, @Body OrderRequest orderRequest);
+    @PUT("api/order/deny")
+    Call<Detail> orderDeny(@Header("Authorization") String authHeader, @Body OrderRequest orderRequest);
 }

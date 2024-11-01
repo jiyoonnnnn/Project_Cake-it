@@ -37,13 +37,8 @@ public class shop_order extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_shop_order);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
         recyclerView = findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -52,7 +47,7 @@ public class shop_order extends AppCompatActivity {
             @Override
             public void onItemClick(Detail detail) {
                 // 클릭 시 주문 세부사항으로 이동
-                Intent intent = new Intent(shop_order.this, Bid_shop_detail.class);
+                Intent intent = new Intent(shop_order.this, Shop_order_detail.class);
                 intent.putExtra("ORDER_ID", detail.getId());
                 startActivity(intent);
             }
@@ -99,7 +94,13 @@ public class shop_order extends AppCompatActivity {
 //        }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (view, insets) -> {
+            // 하단 네비게이션 바 높이만큼 패딩 적용
+            int bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+            bottomNavigationView.setPadding(0, 0, 0, bottomInset);
+            return insets;
+        });
+        bottomNavigationView.setSelectedItemId(R.id.nav_order);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
