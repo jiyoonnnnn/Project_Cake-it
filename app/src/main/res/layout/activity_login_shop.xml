@@ -82,7 +82,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:text="사용자 로그인하러 가기"
-            android:background="@drawable/buttonshape"
+            android:background="@drawable/loginbutton2"
             android:color="@color/light_pink"
             android:textStyle="bold"
             android:textColor="@color/white"
