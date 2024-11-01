@@ -86,10 +86,6 @@
                 android:visibility="gone"
                 android:background="@drawable/rectangle_shape" />
 
-            <ImageView
-                android:id="@+id/topping"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/circle_text"
@@ -103,13 +99,24 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/btn_ai"
+                android:id="@+id/btn_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:layout_margin="5dp"
                 android:backgroundTint="@color/light_pink"
-                android:text="AI로 그리기" />
+                android:text="갤러리 저장" />
+
+            <Button
+                android:id="@+id/btn_refresh"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|left"
+                android:layout_margin="3dp"
+                android:layout_width="120dp"
+                android:backgroundTint="@color/light_pink"
+                android:text="새로고침"
+                />
+
         </FrameLayout>
 
     </LinearLayout>
@@ -128,6 +135,18 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/drag_handle_background" />
+
+        <Button
+            android:id="@+id/btn_ai"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/white"
+            android:visibility="visible"
+            android:text="도움이 필요하신가요? (AI그리기)"
+            android:textColor="@color/black"/>
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +157,7 @@
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
@@ -154,11 +173,13 @@
                         android:text="색상"
                         android:textSize="9pt" />
 
-                    <Spinner
-                        android:id="@+id/spn_color"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp" />
+                    <Button
+                    android:id="@+id/color_sel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                    android:backgroundTint="@color/light_pink"
+                    android:text="선택하기" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -166,7 +187,7 @@
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
@@ -240,9 +261,11 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="70dp"
                     android:background="@drawable/rounded_spinner_item">
                     <TextView
@@ -256,6 +279,31 @@
                         android:text="맛" />
                     <Spinner
                         android:id="@+id/spn_taste"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="70dp"
+                    android:background="@drawable/rounded_spinner_item">
+                    <TextView
+                        android:id="@+id/text_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10pt"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="맛" />
+                    <Spinner
+                        android:id="@+id/spn_size"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp" />

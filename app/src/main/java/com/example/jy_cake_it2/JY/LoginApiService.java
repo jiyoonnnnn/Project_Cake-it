@@ -45,6 +45,10 @@ public interface LoginApiService {
     Call<Detail> getDetail(@Path("question_id") int question_id);
     @GET("api/order/view/{file_name}")
     Call<ResponseBody> getImage(@Path("file_name") String file_name);
+    @GET("api/user/mypage")
+    Call<UserInfoResponse> getUserInfo(@Header("Authorization") String authHeader);
+    @GET("api/shop/mypage")
+    Call<StoreInfoResponse> getStoreInfo(@Header("Authorization") String authHeader);
     @POST("api/user/create") // POST 요청
     Call<ApiResponse> createAccount(@Body UserAccount user);
     @POST("api/shop/create") // POST 요청
@@ -66,5 +70,5 @@ public interface LoginApiService {
     @PUT("api/order/accept")
     Call<Detail> orderAccept(@Header("Authorization") String authHeader, @Body OrderRequest orderRequest);
     @PUT("api/order/deny")
-    Call<Detail> orderDeny(@Header("Authorization") String authHeader, @Body OrderRequest orderRequest);
+    Call<Detail> orderDeny(@Header("Authorization") String authHeader, @Body DenyRequest denyRequest);
 }

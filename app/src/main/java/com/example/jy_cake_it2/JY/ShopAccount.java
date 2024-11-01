@@ -6,9 +6,12 @@ public class ShopAccount {
     private String password2;
     private String shopname;
     private String address;
+    private String bank;
     private String phone;
     private String email;
-    public ShopAccount(String username, String password1, String password2, String shopname, String address, String phone, String email) {
+    private String loc_x;
+    private String loc_y;
+    public ShopAccount(String username, String email,String password1, String password2, String shopname, String phone, String address,  String loc_x, String loc_y, String bank) {
         this.username = username;
         this.password1 = password1;
         this.password2 = password2;
@@ -16,6 +19,9 @@ public class ShopAccount {
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.loc_x = loc_x;
+        this.loc_y = loc_y;
+        this.bank= bank;
     }
     public String getUsername(){
         return username;
@@ -26,6 +32,7 @@ public class ShopAccount {
     public String getAddress() { return address; }
     public String getPhone() { return phone; }
     public String getEmail() { return email; }
+    public String getBank() { return bank; }
     public void setUsername(String username) {
         this.username = username;
     }

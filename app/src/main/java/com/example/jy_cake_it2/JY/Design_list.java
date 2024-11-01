@@ -27,6 +27,12 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 //public class Design_list extends Fragment {
 //
 //    @Override
@@ -39,25 +45,17 @@ public class Design_list extends Fragment implements OnMapReadyCallback {
     private NaverMap naverMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
-    private MyLocationSource myLocationSource;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_design_list, container, false);
-
-        myLocationSource = new MyLocationSource(requireContext());
-
-        initializeMap(rootView); // 지도 초기화
-
+        initializeMap(rootView);
         locationSource = new FusedLocationSource(requireActivity(), LOCATION_PERMISSION_REQUEST_CODE);
-
         return rootView;
     }
 
     private void initializeMap(View rootView) {
-        FragmentManager fm = getChildFragmentManager(); // Fragment 내에서 FragmentManager를 사용해야 함
+        FragmentManager fm = getChildFragmentManager();
         MapFragment mapFragment = (MapFragment) fm.findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
@@ -65,18 +63,16 @@ public class Design_list extends Fragment implements OnMapReadyCallback {
         }
         mapFragment.getMapAsync(this);
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(
-                requestCode, permissions, grantResults)) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             if (!locationSource.isActivated()) {
                 naverMap.setLocationTrackingMode(LocationTrackingMode.None);
             }
             return;
         }
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @UiThread
@@ -84,57 +80,76 @@ public class Design_list extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         naverMap.setLocationSource(locationSource);
-
-        naverMap.setLocationSource(myLocationSource);
-
-        ActivityCompat.requestPermissions(requireActivity(), new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         LocationOverlay locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
 
-        LatLng coord = new LatLng(36.6521, 127.4949);
-        LatLng coord2 = new LatLng(36.6520, 127.49701);
-
         UiSettings uiSettings = naverMap.getUiSettings();
-        uiSettings.setLocationButtonEnabled(true);
+        uiSettings.setLocationButtonEnabled(true); // 기본 위치 버튼 활성화
 
-        MainActivity.MarkerInfo markerInfo1 = new MainActivity.MarkerInfo("1빵", "도서관", DetailActivity1.class);
-        Marker marker1 = new Marker();
-        marker1.setPosition(coord);
-        marker1.setMap(naverMap);
-        marker1.setTag(markerInfo1);
-
-        MainActivity.MarkerInfo markerInfo2 = new MainActivity.MarkerInfo("2빵", "공대건물", DetailActivity2.class);
-        Marker marker2 = new Marker();
-        marker2.setPosition(coord2);
-        marker2.setMap(naverMap);
-        marker2.setTag(markerInfo2);
-
-        Overlay.OnClickListener listener = overlay -> {
-            Marker marker = (Marker) overlay;
-            MainActivity.MarkerInfo info = (MainActivity.MarkerInfo) marker.getTag();
-
-            Intent intent = new Intent(getActivity(), info.getDetailActivityClass());
-            startActivity(intent);
-
-            return true; // 마커 클릭 이벤트 소비
-        };
-
-        marker1.setOnClickListener(listener);
-        marker2.setOnClickListener(listener);
+        loadShopDataAndCreateMarkers();
     }
+
+    private void loadShopDataAndCreateMarkers() {
+        LoginApiService apiService = RetrofitClient.getApiService(); // RetrofitClient 사용
+        Call<ApiResponse> call = apiService.getShops();
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Shop> shopList = response.body().getShop_list();
+                    for (Shop shop : shopList) {
+                        try {
+                            double locX = Double.parseDouble(shop.getLocX());
+                            double locY = Double.parseDouble(shop.getLocY());
+                            LatLng shopLocation = new LatLng(locX, locY);
+
+                            MarkerInfo markerInfo = new MarkerInfo(shop.getShopname(), shop.getIntro(), shop);
+                            Marker marker = new Marker();
+                            marker.setPosition(shopLocation);
+                            marker.setMap(naverMap);
+                            marker.setTag(markerInfo);
+
+                            marker.setOnClickListener(overlay -> {
+                                Marker clickedMarker = (Marker) overlay;
+                                MarkerInfo info = (MarkerInfo) clickedMarker.getTag();
+
+                                Intent intent = new Intent(getActivity(), DetailActivity1.class);
+                                intent.putExtra("shopname", info.getShop().getShopname());
+                                intent.putExtra("email", info.getShop().getEmail());
+                                intent.putExtra("phone", info.getShop().getPhone());
+                                intent.putExtra("address", info.getShop().getAddress());
+                                intent.putExtra("sns", info.getShop().getSns());
+                                intent.putExtra("intro", info.getShop().getIntro());
+                                startActivity(intent);
+
+                                return true;
+                            });
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace(); // 좌표 변환 오류 처리
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // 실패 처리
+            }
+        });
+    }
+
     static class MarkerInfo {
         private final String title;
         private final String description;
-        private final Class<?> detailActivityClass;
+        private final Shop shop;
 
-        public MarkerInfo(String title, String description, Class<?> detailActivityClass) {
+        public MarkerInfo(String title, String description, Shop shop) {
             this.title = title;
             this.description = description;
-            this.detailActivityClass = detailActivityClass;
+            this.shop = shop;
         }
 
         public String getTitle() {
@@ -145,60 +160,8 @@ public class Design_list extends Fragment implements OnMapReadyCallback {
             return description;
         }
 
-        public Class<?> getDetailActivityClass() {
-            return detailActivityClass;
+        public Shop getShop() {
+            return shop;
         }
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-    }
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    public Design_list() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment Design_list.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static Design_list newInstance(String param1, String param2) {
-//        Design_list fragment = new Design_list();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_design_list, container, false);
-//    }
 }

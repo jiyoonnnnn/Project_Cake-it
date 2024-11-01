@@ -101,7 +101,7 @@ public class user_order extends AppCompatActivity {
                     return true;
                 } else if (id == R.id.nav_mypage) {
 //                    case R.id.nav_mypage:
-                    startActivity(new Intent(user_order.this, user_order.class));
+                    startActivity(new Intent(user_order.this, Activity_my_page.class));
                     finish();
                     return true;
                 }

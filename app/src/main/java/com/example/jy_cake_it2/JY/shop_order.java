@@ -107,7 +107,7 @@ public class shop_order extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.nav_shopPage) {
-                    startActivity(new Intent(shop_order.this, bids_shop.class));
+                    startActivity(new Intent(shop_order.this, Shop_page.class));
                     return true;
                 } else if (id == R.id.nav_bid_list) {
                     startActivity(new Intent(shop_order.this, bids_shop.class));
@@ -116,7 +116,7 @@ public class shop_order extends AppCompatActivity {
                     startActivity(new Intent(shop_order.this, shop_order.class));
                     return true;
                 } else if (id == R.id.nav_mypage) {
-                    startActivity(new Intent(shop_order.this, bids_shop.class));
+                    startActivity(new Intent(shop_order.this, Activity_my_page_store.class));
                     return true;
                 }
                 return false;

@@ -97,15 +97,15 @@ public class Shop_order_detail extends AppCompatActivity {
                     Detail orderDetail = response.body();
                     statusCode = orderDetail.getOrderStatus();
                     //subjectTextView.setText("subject : " + orderDetail.getSubject());
-                    contentTextView.setText("content : " + orderDetail.getContent());
-                    createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
-                    userTextView.setText("username : " + orderDetail.getUser().getUsername());
-                    typeTextView.setText("cake_type : " + orderDetail.getCakeType());
-                    shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
-                    colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
-                    flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
-                    pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
-                    letteringTextView.setText("lettering : " + orderDetail.getLettering());
+                    contentTextView.setText("요청사항 : " + orderDetail.getContent());
+                    createDateTextView.setText("주문 생성 날짜 : " + orderDetail.getCreateDate());
+                    userTextView.setText("주문자 이름 : " + orderDetail.getUser().getUsername());
+                    typeTextView.setText("케이크 크기 : " + orderDetail.getCakeType());
+                    shapeTextView.setText("케이크 모양 : " + orderDetail.getCakeShape());
+                    colorTextView.setText("케이크 색 : " + orderDetail.getCakeColor());
+                    flavorTextView.setText("맛 : " + orderDetail.getCakeFlavor());
+                    pickupDateTextView.setText("픽업 날짜 : " + orderDetail.getPickupDate());
+                    letteringTextView.setText("레터링 : " + orderDetail.getLettering());
 
                     setButtonVisibility(statusCode);
                 } else if (response.code() == 307) {
@@ -174,8 +174,8 @@ public class Shop_order_detail extends AppCompatActivity {
                 if (accessToken != null) {
                     Retrofit retrofit = RetrofitClient.getClient(accessToken);
                     LoginApiService apiService = retrofit.create(LoginApiService.class);
-                    OrderRequest orderRequest = new OrderRequest(question_id);
-                    Call<Detail> call = apiService.orderDeny("Bearer " + accessToken, orderRequest);
+                    DenyRequest denyRequest = new DenyRequest(question_id,"영업안해요");
+                    Call<Detail> call = apiService.orderDeny("Bearer " + accessToken, denyRequest);
 
                     call.enqueue(new Callback<Detail>() {
                         @Override

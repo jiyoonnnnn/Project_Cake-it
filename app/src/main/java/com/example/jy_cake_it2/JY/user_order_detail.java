@@ -67,12 +67,8 @@ public class user_order_detail extends AppCompatActivity {
         });
         // TextView 초기화
         cakeImage = findViewById(R.id.cake_image);
-        idTextView = findViewById(R.id.idTextView);
-        subjectTextView = findViewById(R.id.subjectTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
-        userTextView = findViewById(R.id.userTextView);
-        modifyDateTextView = findViewById(R.id.modifyDateTextView);
         typeTextView = findViewById(R.id.typeTextView);
         shapeTextView = findViewById(R.id.shapeTextView);
         colorTextView = findViewById(R.id.colorTextView);
@@ -133,6 +129,15 @@ public class user_order_detail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        Button paymentButton=findViewById(R.id.paymentButton);;
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(user_order_detail.this, "대상 가게의 페이지에서 계좌번호를 확인하고 입금하세요. " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -207,7 +212,11 @@ public class user_order_detail extends AppCompatActivity {
             public void onResponse(Call<Detail> call, Response<Detail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Detail orderDetail = response.body();
-
+                    if (orderDetail.getOrderStatus() == 20) {
+                        recyclerView.setVisibility(View.VISIBLE); // 주문 코드가 20번일 경우 보이게 설정
+                    } else {
+                        recyclerView.setVisibility(View.GONE); // 그 외의 경우 숨기기
+                    }
                     // 세부 사항 업데이트
                     subjectTextView.setText("subject : " + orderDetail.getSubject());
                     contentTextView.setText("content : " + orderDetail.getContent());
@@ -224,15 +233,13 @@ public class user_order_detail extends AppCompatActivity {
                     params.height = totalHeight;
                     recyclerView.setLayoutParams(params);
 
-                    userTextView.setText("username : " + orderDetail.getUser().getUsername());
-                    modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
-                    typeTextView.setText("cake_type : " + orderDetail.getCakeType());
-                    shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
-                    colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
-                    flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
-                    pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
-                    letteringTextView.setText("lettering : " + orderDetail.getLettering());
-                    statusTextView.setText("상태 : " + orderDetail.getOrderStatus());
+                    userTextView.setText("주문자 이름 : " + orderDetail.getUser().getUsername());
+                    typeTextView.setText("케이크 크기 : " + orderDetail.getCakeType());
+                    shapeTextView.setText("케이크 모양 : " + orderDetail.getCakeShape());
+                    colorTextView.setText("케이크 색 : " + orderDetail.getCakeColor());
+                    flavorTextView.setText("맛 : " + orderDetail.getCakeFlavor());
+                    pickupDateTextView.setText("픽업 날짜 : " + orderDetail.getPickupDate());
+                    letteringTextView.setText("레터링 : " + orderDetail.getLettering());
                     shopTextView.setText("가게 : " + orderDetail.getShopId());
                     fetchCakeImage(orderDetail.getCakeIMG());
 

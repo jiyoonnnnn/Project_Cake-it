@@ -94,7 +94,7 @@ public class activity_browse extends AppCompatActivity {
                     return true;
                 } else if (id == R.id.nav_mypage) {
 //                    case R.id.nav_mypage:
-                    startActivity(new Intent(activity_browse.this, user_order.class));
+                    startActivity(new Intent(activity_browse.this, Activity_my_page.class));
                     finish();
                     return true;
                 }

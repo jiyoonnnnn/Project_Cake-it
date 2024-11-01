@@ -208,7 +208,76 @@
                     android:hint=" 이메일"
                     android:inputType="textPersonName"
                     android:text="" />
+                <TextView
+                    android:id="@+id/signBanktext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="계좌"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/signBank"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/loginformshape"
+                    android:hint=" 계좌"
+                    android:inputType="textPersonName"
+                    android:text="" />
+                <TextView
+                    android:id="@+id/signLocXtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="위도 (loc_x)"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/signLocX"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:hint=" 위도를 입력하세요"
+                    android:background="@drawable/loginformshape"
+                    android:inputType="numberDecimal"
+                    android:text="" />
+
+                <!-- loc_y 좌표 입력 필드 -->
+                <TextView
+                    android:id="@+id/signLocYtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="경도 (loc_y)"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/signLocY"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:hint=" 경도를 입력하세요"
+                    android:background="@drawable/loginformshape"
+                    android:inputType="numberDecimal"
+                    android:text="" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/convertAddressButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/signbuttonshape"
+                    android:text="주소 변환"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/signupbutton"
                     android:layout_width="wrap_content"

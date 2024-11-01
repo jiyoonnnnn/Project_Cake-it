@@ -54,12 +54,10 @@ public class Bid_shop_detail extends AppCompatActivity {
             return insets;
         });
 
-        idTextView = findViewById(R.id.idTextView);
-        subjectTextView = findViewById(R.id.subjectTextView);
+        //ㄴㅅidTextView = findViewById(R.id.idTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
         userTextView = findViewById(R.id.userTextView);
-        modifyDateTextView = findViewById(R.id.modifyDateTextView);
         typeTextView = findViewById(R.id.typeTextView);
         shapeTextView = findViewById(R.id.shapeTextView);
         colorTextView = findViewById(R.id.colorTextView);
@@ -91,17 +89,15 @@ public class Bid_shop_detail extends AppCompatActivity {
             public void onResponse(Call<Detail> call, Response<Detail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Detail orderDetail = response.body();
-                    subjectTextView.setText("subject : " + orderDetail.getSubject());
-                    contentTextView.setText("content : " + orderDetail.getContent());
-                    createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
-                    userTextView.setText("username : " + orderDetail.getUser().getUsername());
-                    modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
-                    typeTextView.setText("cake_type : " + orderDetail.getCakeType());
-                    shapeTextView.setText("cake_shape : " + orderDetail.getCakeShape());
-                    colorTextView.setText("cake_color : " + orderDetail.getCakeColor());
-                    flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
-                    pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
-                    letteringTextView.setText("lettering : " + orderDetail.getLettering());
+                    contentTextView.setText("요청사항 : " + orderDetail.getContent());
+                    createDateTextView.setText("주문 생성 날짜 : " + orderDetail.getCreateDate());
+                    userTextView.setText("주문자 이름 : " + orderDetail.getUser().getUsername());
+                    typeTextView.setText("케이크 크기 : " + orderDetail.getCakeType());
+                    shapeTextView.setText("케이크 모양 : " + orderDetail.getCakeShape());
+                    colorTextView.setText("케이크 색 : " + orderDetail.getCakeColor());
+                    flavorTextView.setText("맛 : " + orderDetail.getCakeFlavor());
+                    pickupDateTextView.setText("픽업 날짜 : " + orderDetail.getPickupDate());
+                    letteringTextView.setText("레터링 : " + orderDetail.getLettering());
 
                 } else if (response.code() == 307) {
                     // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
@@ -151,15 +147,11 @@ public class Bid_shop_detail extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                             Toast.makeText(Bid_shop_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
-                            if (response.isSuccessful() && response.body() != null) {
-                                if (response.isSuccessful()) {
+                            if (response.isSuccessful()) {
                                     Toast.makeText(Bid_shop_detail.this, "성공! ", Toast.LENGTH_LONG).show();
-                                } else if (response.code() == 400) {
-                                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
-                                    Toast.makeText(Bid_shop_detail.this, "이미 입찰된 주문입니다. ", Toast.LENGTH_LONG).show();
-                                }
+
                             }else{
-                                Toast.makeText(Bid_shop_detail.this, "실패! ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Bid_shop_detail.this, "이미 입찰된 주문입니다. ", Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -171,17 +163,7 @@ public class Bid_shop_detail extends AppCompatActivity {
                 }
             }
         });
-        TextView btn1;
-        btn1 = findViewById(R.id.back);
-        btn1.setOnClickListener(new View.OnClickListener() {
 
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Bid_shop_detail.this, activity_browse.class);
-                startActivity(intent);
-            }
-        });
 
     }
 }

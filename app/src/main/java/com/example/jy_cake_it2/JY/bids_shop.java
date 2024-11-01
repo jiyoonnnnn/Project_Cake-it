@@ -107,7 +107,7 @@ public class bids_shop extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.nav_shopPage) {
-                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    startActivity(new Intent(bids_shop.this, Shop_page.class));
                     finish();
                     return true;
                 } else if (id == R.id.nav_bid_list) {
@@ -119,7 +119,7 @@ public class bids_shop extends AppCompatActivity {
                     finish();
                     return true;
                 } else if (id == R.id.nav_mypage) {
-                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    startActivity(new Intent(bids_shop.this, Activity_my_page_store.class));
                     finish();
                     return true;
                 }

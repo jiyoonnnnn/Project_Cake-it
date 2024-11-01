@@ -17,10 +17,12 @@ public class MyLocationSource implements LocationSource {
     private final LocationManager locationManager;
     private OnLocationChangedListener listener;
     private final Context context;
+    private Location lastKnownLocation; // 마지막 알려진 위치 저장
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
+            lastKnownLocation = location; // 위치 업데이트 시 저장
             if (listener != null) {
                 listener.onLocationChanged(location);
             }
@@ -42,7 +44,8 @@ public class MyLocationSource implements LocationSource {
     @Override
     public void activate(OnLocationChangedListener listener) {
         this.listener = listener;
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // 권한이 없는 경우 실행되지 않음
             return;
         }
@@ -52,5 +55,9 @@ public class MyLocationSource implements LocationSource {
     @Override
     public void deactivate() {
         locationManager.removeUpdates(locationListener);
+    }
+
+    public Location getLastKnownLocation() {
+        return lastKnownLocation; // 마지막 알려진 위치 반환
     }
 }

@@ -41,15 +41,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AI_image_generate extends AppCompatActivity {
-    Button btn_save_image, btn_generate;
+    Button btn_save_image, btn_generate, btn_back;
     EditText image_text;
     ImageView rectangle, circle;
     ProgressBar progress_bar;
 
 
-//    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    //    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
-//    OkHttpClient client = new OkHttpClient();
+    //    OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json");
 
     OkHttpClient client = new OkHttpClient();
@@ -88,8 +89,8 @@ public class AI_image_generate extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         saveImage();
-                        Intent intent = new Intent(AI_image_generate.this, activity_draw_cake.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(AI_image_generate.this, activity_draw_cake.class);
+//                        startActivity(intent);
                     }
                 } else {
                     if (ContextCompat.checkSelfPermission(AI_image_generate.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -99,8 +100,8 @@ public class AI_image_generate extends AppCompatActivity {
                         ActivityCompat.requestPermissions(AI_image_generate.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
                     } else {
                         saveImage();
-                        Intent intent = new Intent(AI_image_generate.this, activity_draw_cake.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(AI_image_generate.this, activity_draw_cake.class);
+//                        startActivity(intent);
                     }
                 }
             }
@@ -114,6 +115,14 @@ public class AI_image_generate extends AppCompatActivity {
                     return;
                 }
                 callAPI(text);
+            }
+        });
+        btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AI_image_generate.this, activity_draw_cake.class);
+                startActivity(intent);
             }
         });
     }
@@ -134,7 +143,7 @@ public class AI_image_generate extends AppCompatActivity {
         RequestBody requestBody = RequestBody.create(jsonBody.toString(), JSON);
         Request request = new Request.Builder()
                 .url("https://api.openai.com/v1/images/generations")
-                .header("Authorization", "이 부분에 자신의 API KEY를 입력해주세요")
+                .header("Authorization", "Bearer sk-Fac6rIcqTqacbFW9arvx8x6XtJXNxBUMJB3q0mrZjkT3BlbkFJLr2S3_5Pl_GE6vzB5-fECkd5vEjezuQ2NEV2zmQF4A")
                 .post(requestBody)
                 .build();
 
@@ -195,7 +204,7 @@ public class AI_image_generate extends AppCompatActivity {
         setInProgress(false);
     }
 
-//    void saveImage() {
+    //    void saveImage() {
 //        BitmapDrawable drawable = (BitmapDrawable) rectangle.getDrawable();
 //        if (drawable == null) {
 //            Toast.makeText(this, "이미지가 없습니다", Toast.LENGTH_SHORT).show();
@@ -233,38 +242,38 @@ public class AI_image_generate extends AppCompatActivity {
 //            }
 //        }
 //    }
-void saveImage() {
-    BitmapDrawable drawable = (BitmapDrawable) rectangle.getDrawable();
-    if (drawable == null) {
-        Toast.makeText(this, "이미지가 없습니다", Toast.LENGTH_SHORT).show();
-        return;
-    }
-    Bitmap bitmap = drawable.getBitmap();
-    String fileName = "cake_" + System.currentTimeMillis() + ".jpg";
-    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "cake_image");
-
-    if (!directory.exists()) {
-        if (!directory.mkdirs()) {
-            Toast.makeText(this, "폴더 생성 실패", Toast.LENGTH_SHORT).show();
+    void saveImage() {
+        BitmapDrawable drawable = (BitmapDrawable) rectangle.getDrawable();
+        if (drawable == null) {
+            Toast.makeText(this, "이미지가 없습니다", Toast.LENGTH_SHORT).show();
             return;
         }
-    }
-    File file = new File(directory, fileName);
+        Bitmap bitmap = drawable.getBitmap();
+        String fileName = "cake_" + System.currentTimeMillis() + ".jpg";
+        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "cake_image");
 
-    try (OutputStream out = new FileOutputStream(file)) {
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        Toast.makeText(this, "이미지가 저장되었습니다: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-        // 갤러리에 이미지 추가
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(file);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                Toast.makeText(this, "폴더 생성 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        File file = new File(directory, fileName);
 
-    } catch (IOException e) {
-        e.printStackTrace();
-        Toast.makeText(this, "이미지 저장 중 오류 발생", Toast.LENGTH_SHORT).show();
+        try (OutputStream out = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            Toast.makeText(this, "이미지가 저장되었습니다: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            // 갤러리에 이미지 추가
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            this.sendBroadcast(mediaScanIntent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "이미지 저장 중 오류 발생", Toast.LENGTH_SHORT).show();
+        }
     }
-}
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
