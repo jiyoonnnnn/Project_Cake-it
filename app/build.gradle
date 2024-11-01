@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.jy_cake_it2"
-        minSdk 33
+        minSdk 31
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -42,8 +42,9 @@ dependencies {
     implementation 'com.naver.maps:map-sdk:3.18.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.google.android.material:material:1.9.0' // 명시적으로 추가
     implementation libs.appcompat
-    implementation libs.material
+    //implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.annotation

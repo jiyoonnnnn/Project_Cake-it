@@ -1,5 +1,6 @@
 package com.example.jy_cake_it2.JY;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.QuestionView
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         Detail detail = questionList.get(position);
+        Log.d("OrderAdapter", "Order Status: " + detail.getOrderStatus());
         holder.bind(detail, listener);
     }
 
@@ -66,11 +68,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.QuestionView
         public void bind(final Detail detail, final OnItemClickListener listener) {
             orderName.setText(detail.getSubject());
             orderCreateDate.setText(detail.getPickupDate());
+
             if (detail.getOrderStatus() == 20)
                 orderStatus.setText("입찰진행중");
             else
                 orderStatus.setText("주문접수");
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

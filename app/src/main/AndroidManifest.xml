@@ -23,6 +23,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".JY.Shop_order_detail"
+            android:exported="false" />
+        <activity
             android:name=".JY.Bid_shop_detail"
             android:exported="false" />
         <activity

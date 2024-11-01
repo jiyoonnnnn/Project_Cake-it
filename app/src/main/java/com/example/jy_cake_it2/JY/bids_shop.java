@@ -81,18 +81,7 @@ public class bids_shop extends AppCompatActivity {
                     ApiResponse questionList = response.body();
                     List<Detail> orders = questionList.getOrder_list();
                     orderAdapter.updateOrders(orders);
-                    // RecyclerView에 데이터 설정
-//                    orderAdapter = new OrderAdapter(orders, new OrderAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(Detail detail) {
-//                            // 클릭 시 처리
-//                            // 예를 들어 주문 세부사항으로 이동
-//                             Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
-//                             intent.putExtra("ORDER_ID", detail.getId());
-//                             startActivity(intent);
-//                        }
-//                    });
-//                    recyclerView.setAdapter(orderAdapter);
+
                 } else {
                     Toast.makeText(bids_shop.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
                 }

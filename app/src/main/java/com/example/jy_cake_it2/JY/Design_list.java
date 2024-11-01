@@ -27,7 +27,14 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
-
+//public class Design_list extends Fragment {
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        // Layout 파일 연결
+//        return inflater.inflate(R.layout.fragment_design_list, container, false);
+//    }
+//}
 public class Design_list extends Fragment implements OnMapReadyCallback {
     private NaverMap naverMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;

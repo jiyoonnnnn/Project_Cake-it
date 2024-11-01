@@ -33,22 +33,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:layout_weight="1"
-                android:text="청주시 청원구"
+                android:text="둘러보기"
                 android:textSize="25dp" />
             <TextView
                 android:id="@+id/myOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="나의 주문"
+                android:text="            "
                 android:textSize="20dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="57dp"
             android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:background="@color/lighter_pink">
+            android:background="@color/lighter_pink"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/shoplist"
@@ -56,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/browsebuttonshape"
                 android:layout_weight="1"
-                android:text="업체목록"
+                android:background="@android:color/transparent"
+                android:text="     업체목록"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -67,10 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/browsebuttonshape"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:text="지도보기"
+                android:background="@android:color/transparent"
+                android:text="지도보기     "
                 android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />

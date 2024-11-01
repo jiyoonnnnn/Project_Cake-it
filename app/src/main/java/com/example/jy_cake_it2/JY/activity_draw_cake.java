@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.jy_cake_it2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 
 public class activity_draw_cake extends AppCompatActivity {
 
@@ -30,7 +33,7 @@ public class activity_draw_cake extends AppCompatActivity {
 
     EditText edit_letter;
     ImageView circle, square;
-
+    private BottomSheetBehavior bottomSheetBehavior;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +65,32 @@ public class activity_draw_cake extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        View bottomSheet = findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
+        // BottomSheet의 초기 상태 설정 (일부만 보이도록 collapsed 상태)
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        // BottomSheet의 기본 peek 높이 설정 (예: 300dp)
+        int peekHeight = (int) getResources().getDimension(R.dimen.bottom_sheet_peek_height);
+        bottomSheetBehavior.setPeekHeight(peekHeight);
+
+        // BottomSheet가 드래그될 때 상태 변화를 감지할 수 있는 콜백 설정
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    // BottomSheet가 완전히 펼쳐졌을 때의 동작
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // BottomSheet가 닫혔을 때의 동작
+                }
+            }
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // 슬라이딩 시 상태를 처리할 수 있는 콜백
+            }
+        });
         btn_ai = findViewById(R.id.btn_ai);
         btn_ai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,15 +99,15 @@ public class activity_draw_cake extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        btn1 = findViewById(R.id.back);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity_draw_cake.this, Login_main.class);
-                startActivity(intent);
-            }
-        });
+//
+//        btn1 = findViewById(R.id.back);
+//        btn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(activity_draw_cake.this, Login_main.class);
+//                startActivity(intent);
+//            }
+//        });
         circle = findViewById(R.id.circle);
         square = findViewById(R.id.rectangle);
         spnShape = findViewById(R.id.spn_shape);
@@ -228,7 +256,7 @@ public class activity_draw_cake extends AppCompatActivity {
             }
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
+        bottomNavigationView.setSelectedItemId(R.id.nav_draw_cake);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -238,18 +266,22 @@ public class activity_draw_cake extends AppCompatActivity {
 //                switch (item.getItemId()) {
 //                    case R.id.nav_draw_cake:
                     startActivity(new Intent(activity_draw_cake.this, activity_draw_cake.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_browse) {
 //                    case R.id.nav_browse:
                     startActivity(new Intent(activity_draw_cake.this, activity_browse.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_order) {
 //                    case R.id.nav_order:
-                    startActivity(new Intent(activity_draw_cake.this, bid_user.class));
+                    startActivity(new Intent(activity_draw_cake.this, user_order.class));
+                    finish();
                     return true;
                 } else if (id == R.id.nav_mypage) {
 //                    case R.id.nav_mypage:
                     startActivity(new Intent(activity_draw_cake.this, user_order.class));
+                    finish();
                     return true;
                 }
                 return false;

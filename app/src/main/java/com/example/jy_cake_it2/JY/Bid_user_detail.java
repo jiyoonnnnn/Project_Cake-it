@@ -1,8 +1,16 @@
 package com.example.jy_cake_it2.JY;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +26,11 @@ import com.example.jy_cake_it2.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,40 +38,37 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Bid_user_detail extends AppCompatActivity {
-    private TextView idTextView;
-    private TextView subjectTextView;
-    private TextView contentTextView;
-    private TextView createDateTextView;
+    private TextView idTextView, subjectTextView, contentTextView, createDateTextView;
     private RecyclerView recyclerView;
     private BidsAdapter bidsAdapter;
     private List<Bids> bidsList = new ArrayList<>();
-    private TextView userTextView;
-    private TextView modifyDateTextView;
-    private TextView typeTextView;
-    private TextView shapeTextView;
-    private TextView colorTextView;
-    private TextView flavorTextView;
-    private TextView pickupDateTextView;
-    private TextView letteringTextView;
+    private TextView userTextView, modifyDateTextView, typeTextView, shapeTextView, colorTextView, flavorTextView, pickupDateTextView, letteringTextView, statusTextView,shopTextView;
     private int question_id;
-
+    ImageView cakeImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_bid_user_detail);
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        TextView btn1 = findViewById(R.id.back);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Bid_user_detail.this, activity_browse.class);
+                startActivity(intent);
+            }
+        });
+        // TextView 초기화
+        cakeImage = findViewById(R.id.cake_image);
         idTextView = findViewById(R.id.idTextView);
         subjectTextView = findViewById(R.id.subjectTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
-
-        recyclerView = findViewById(R.id.answerRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        bidsAdapter = new BidsAdapter(new ArrayList<>());
-        recyclerView.setAdapter(bidsAdapter);
-
         userTextView = findViewById(R.id.userTextView);
         modifyDateTextView = findViewById(R.id.modifyDateTextView);
         typeTextView = findViewById(R.id.typeTextView);
@@ -70,32 +77,118 @@ public class Bid_user_detail extends AppCompatActivity {
         flavorTextView = findViewById(R.id.flavorTextView);
         pickupDateTextView = findViewById(R.id.pickupDateTextView);
         letteringTextView = findViewById(R.id.letteringTextView);
+        statusTextView = findViewById(R.id.statusTextView);
+        shopTextView = findViewById(R.id.shopTextView);
 
-//        BidsAdapter adapter = new BidsAdapter(bidsList);
-//        bidsAdapter = new BidsAdapter(new ArrayList<>(), new BidsAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Bids bids) {
-//                Toast.makeText(Bid_user_detail.this, "수정중 ", Toast.LENGTH_LONG).show();
-                // 클릭 시 주문 세부사항으로 이동
-//                Intent intent = new Intent(Bid_user_detail.this, Bid_user_detail.class);
-//                intent.putExtra("ORDER_ID", detail.getId());
-//                startActivity(intent);
-//            }
-//        });
-//        recyclerView.setAdapter(bidsAdapter);
+        // RecyclerView 초기화 및 어댑터 설정
+        recyclerView = findViewById(R.id.answerRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // 초기 어댑터 설정 (빈 리스트로 시작)
+        bidsAdapter = new BidsAdapter(bidsList, new BidsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Bids bid) {
+                showBidDialog(question_id, bid);
+            }
+        });
+        recyclerView.setAdapter(bidsAdapter);
+
+        // Intent로부터 question_id 받기
         Intent intent = getIntent();
         question_id = intent.getIntExtra("ORDER_ID", -1);
 
+        // 주문 세부사항 가져오기
         fetchOrderDetail(question_id);
     }
+
+    private void showBidDialog(int question_id, Bids bid) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_custom, null);
+        builder.setView(dialogView);
+
+        TextView dialogShopName = dialogView.findViewById(R.id.dialog_shop_name);
+        Button confirmButton = dialogView.findViewById(R.id.dialog_confirm_button);
+        Button cancelButton = dialogView.findViewById(R.id.dialog_cancel_button);
+
+        dialogShopName.setText("Shop Name: " + bid.getShop().getShopname());
+        AlertDialog dialog = builder.create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleConfirmBid(question_id, bid);
+                dialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void handleConfirmBid(int question_id, Bids bid) {
+        SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("AccessToken", null);
+        int shop_id = bid.getShop().getId();
+        if (accessToken != null) {
+            Retrofit retrofit = RetrofitClient.getClient(accessToken);
+            LoginApiService apiService = retrofit.create(LoginApiService.class);
+            SelectShop request = new SelectShop(question_id, shop_id);
+            Call<SelectShop> call = apiService.selectShop("Bearer " + accessToken, request);
+
+            call.enqueue(new Callback<SelectShop>() {
+                @Override
+                public void onResponse(Call<SelectShop> call, Response<SelectShop> response) {
+                    if (response.isSuccessful() ) {
+                        Toast.makeText(Bid_user_detail.this, "Confirmed bid from " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
+//                        handleChangeStatus(question_id);
+                    }else {
+                        Toast.makeText(Bid_user_detail.this, "실패" + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<SelectShop> call, Throwable t) {
+                    Toast.makeText(Bid_user_detail.this, "실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+//    private void handleChangeStatus(int question_id) {
+//        SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+//        String accessToken = sharedPreferences.getString("AccessToken", null);
+//        if (accessToken != null) {
+//            Retrofit retrofit = RetrofitClient.getClient(accessToken);
+//            LoginApiService apiService = retrofit.create(LoginApiService.class);
+//            ChangeStatus request = new ChangeStatus(question_id, 30);
+//            Call<ChangeStatus> call = apiService.changeStatus("Bearer " + accessToken, request);
+//
+//            call.enqueue(new Callback<ChangeStatus>() {
+//                @Override
+//                public void onResponse(Call<ChangeStatus> call, Response<ChangeStatus> response) {
+//                    if (response.isSuccessful() ) {
+//                        Toast.makeText(Bid_user_detail.this, "주문상태 변경", Toast.LENGTH_SHORT).show();
+//                    }else {
+//                        Toast.makeText(Bid_user_detail.this, "실패" + response.code(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<ChangeStatus> call, Throwable t) {
+//                    Toast.makeText(Bid_user_detail.this, "실패", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//    }
     private void fetchOrderDetail(int question_id) {
-        Gson gson = new GsonBuilder()
-                .setLenient() // This allows lenient parsing of JSON
-                .create();
+        Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://132.145.80.50:9999/") // 실제 API의 베이스 URL로 변경하세요
+                .baseUrl("http://132.145.80.50:9999/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -107,14 +200,16 @@ public class Bid_user_detail extends AppCompatActivity {
             public void onResponse(Call<Detail> call, Response<Detail> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Detail orderDetail = response.body();
+
+                    // 세부 사항 업데이트
                     subjectTextView.setText("subject : " + orderDetail.getSubject());
                     contentTextView.setText("content : " + orderDetail.getContent());
                     createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
 
+                    // 입찰 리스트 업데이트
                     List<Bids> bids = orderDetail.getAnswers();
-                    bidsAdapter.updateBids(bids);
-//                    bidsAdapter = new BidsAdapter(bids);
-//                    recyclerView.setAdapter(bidsAdapter);
+                    bidsAdapter.updateBids(bids); // 어댑터에 새로운 데이터 제공
+
                     userTextView.setText("username : " + orderDetail.getUser().getUsername());
                     modifyDateTextView.setText("modify_date : " + orderDetail.getModifyDate());
                     typeTextView.setText("cake_type : " + orderDetail.getCakeType());
@@ -123,16 +218,18 @@ public class Bid_user_detail extends AppCompatActivity {
                     flavorTextView.setText("cake_flavor : " + orderDetail.getCakeFlavor());
                     pickupDateTextView.setText("pickup_date : " + orderDetail.getPickupDate());
                     letteringTextView.setText("lettering : " + orderDetail.getLettering());
+                    statusTextView.setText("상태 : " + orderDetail.getOrderStatus());
+                    shopTextView.setText("가게 : " + orderDetail.getShopId());
+                    fetchCakeImage(orderDetail.getCakeIMG());
+
+//                    cakeImage.setImageBitmap(response.body());
+//                    cakeImage.getDrawable();
 
                 } else if (response.code() == 307) {
-                    // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
                     String newLocation = response.raw().header("Location");
                     if (newLocation != null) {
-                        // 새로운 위치로 재시도
-                        // newLocation에 있는 URL로 다시 요청을 보내야 합니다.
                         subjectTextView.setText("Temporary redirect to: " + newLocation);
                     } else {
-                        // 새로운 위치가 제공되지 않은 경우에 대한 처리
                         subjectTextView.setText("Temporary redirect, but no new location provided");
                     }
                 }
@@ -140,19 +237,36 @@ public class Bid_user_detail extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Detail> call, Throwable t) {
-                Toast.makeText( Bid_user_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Bid_user_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void fetchCakeImage(String imageFileName) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://132.145.80.50:9999/")
+                .build();
 
-        TextView btn1;
-        btn1 = findViewById(R.id.back);
-        btn1.setOnClickListener(new View.OnClickListener() {
+        LoginApiService apiService = retrofit.create(LoginApiService.class);
+
+        Call<ResponseBody> imageCall = apiService.getImage(imageFileName);
+        imageCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Bid_user_detail.this, activity_browse.class);
-                startActivity(intent);
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // 비트맵으로 변환
+                    InputStream inputStream = response.body().byteStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    //Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    cakeImage.setImageBitmap(bitmap);
+                } else {
+                    Toast.makeText(Bid_user_detail.this, "이미지를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Bid_user_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
