@@ -125,6 +125,5 @@ public class bids_shop extends AppCompatActivity {
                 Toast.makeText(bids_shop.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

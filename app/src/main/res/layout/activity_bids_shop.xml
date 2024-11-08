@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:gravity="center"
+
                 android:text="입찰"
                 android:textSize="25dp" />
         </LinearLayout>
