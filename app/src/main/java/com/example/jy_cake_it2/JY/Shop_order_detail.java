@@ -70,7 +70,6 @@ public class Shop_order_detail extends AppCompatActivity {
         colorTextView = findViewById(R.id.colorTextView);
         flavorTextView = findViewById(R.id.flavorTextView);
         pickupDateTextView = findViewById(R.id.pickupDateTextView);
-        statusTextView = findViewById(R.id.statusTextView);
         letteringTextView = findViewById(R.id.letteringTextView);
         btn_accept = findViewById(R.id.btn_accept);
         btn_deny = findViewById(R.id.btn_deny);
