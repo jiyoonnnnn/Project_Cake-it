@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/address_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주소를 입력하세요" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/convert_button"
+        android:layout_width="68dp"
+        android:layout_height="38dp"
+        android:background="@drawable/signbuttonshape"
+        android:text="변환" />
+
+    <TextView
+        android:id="@+id/result_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="결과가 여기에 표시됩니다."
+        android:paddingTop="16dp" />
+
+</LinearLayout>

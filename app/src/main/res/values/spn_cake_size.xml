@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cake_size">
+        <item>미니 (1-2인용)</item>
+        <item>1호 (3-4인용)</item>
+        <item>2호 (5-6인용)</item>
+        <item>3호 (7-8인용)</item>
+        <item>4호 (9-10인용)</item>
+        <item>5호 (11-15인용)</item>
+    </string-array>
+</resources>

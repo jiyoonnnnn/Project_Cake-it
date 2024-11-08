@@ -35,6 +35,7 @@ public class bids_shop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bids_shop);
 
+
         recyclerView = findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -48,7 +49,39 @@ public class bids_shop extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (view, insets) -> {
+            // 하단 네비게이션 바 높이만큼 패딩 적용
+            int bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+            bottomNavigationView.setPadding(0, 0, 0, bottomInset);
+            return insets;
+        });
+        bottomNavigationView.setSelectedItemId(R.id.nav_bid_list);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
 
+                if (id == R.id.nav_shopPage) {
+                    startActivity(new Intent(bids_shop.this, Shop_page.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_bid_list) {
+                    startActivity(new Intent(bids_shop.this, bids_shop.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_order) {
+                    startActivity(new Intent(bids_shop.this, shop_order.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_mypage) {
+                    startActivity(new Intent(bids_shop.this, Activity_my_page_store.class));
+                    finish();
+                    return true;
+                }
+                return false;
+            }
+        });
 //        orderAdapter = new OrderAdapter(new ArrayList<>(), new OrderAdapter.OnItemClickListener());
         recyclerView.setAdapter(orderAdapter);
         fetchQuestions();
@@ -77,22 +110,11 @@ public class bids_shop extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 Toast.makeText(bids_shop.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() ) {
                     ApiResponse questionList = response.body();
                     List<Detail> orders = questionList.getOrder_list();
                     orderAdapter.updateOrders(orders);
-                    // RecyclerView에 데이터 설정
-//                    orderAdapter = new OrderAdapter(orders, new OrderAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(Detail detail) {
-//                            // 클릭 시 처리
-//                            // 예를 들어 주문 세부사항으로 이동
-//                             Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
-//                             intent.putExtra("ORDER_ID", detail.getId());
-//                             startActivity(intent);
-//                        }
-//                    });
-//                    recyclerView.setAdapter(orderAdapter);
+
                 } else {
                     Toast.makeText(bids_shop.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -101,29 +123,6 @@ public class bids_shop extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Toast.makeText(bids_shop.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-
-                if (id == R.id.nav_shopPage) {
-                    startActivity(new Intent(bids_shop.this, bids_shop.class));
-                    return true;
-                } else if (id == R.id.nav_bid_list) {
-                    startActivity(new Intent(bids_shop.this, bids_shop.class));
-                    return true;
-                } else if (id == R.id.nav_order) {
-                    startActivity(new Intent(bids_shop.this, shop_order.class));
-                    return true;
-                } else if (id == R.id.nav_mypage) {
-                    startActivity(new Intent(bids_shop.this, bids_shop.class));
-                    return true;
-                }
-                return false;
             }
         });
     }

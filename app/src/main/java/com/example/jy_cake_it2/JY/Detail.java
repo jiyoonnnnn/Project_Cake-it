@@ -19,9 +19,14 @@ public class Detail {
     private int shop_id;
     private int order_status;
     private String status_msg;
+    private String cake_img;
 
-//    private String voter;
+
+    //    private String voter;
     public int getId() { return id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Detail(String subject, String content, String cake_type, String cake_shape, String cake_color, String cake_flavor, String pickup_date, String lettering, int shop_id) {
         this.subject = subject;
@@ -123,5 +128,11 @@ public class Detail {
     public void setOrderStatus(int order_status) {
         this.order_status = order_status;
     }
-}
+    public String getCakeIMG() {
+        return cake_img;
+    }
 
+    public void setCakeIMG(String cake_img) {
+        this.cake_img = cake_img;
+    }
+}

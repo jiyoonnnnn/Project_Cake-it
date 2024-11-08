@@ -27,8 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class activity_shopsignup extends AppCompatActivity {
 
     TextView back;
-    EditText editName,editPhone,editPw,editPw2,editEmail,editShopname,editAddress;
-    Button pwcheck, btn2;
+    EditText editName,editPhone,editPw,editPw2,editEmail,editShopname,editAddress,editLocX,editLocY, editBank;
+    Button pwcheck, btn2, convertAddressButton;
     private TextView dataTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,9 @@ public class activity_shopsignup extends AppCompatActivity {
         editAddress=findViewById(R.id.signAdress);
         editPhone=findViewById(R.id.signShopPhone);
         editEmail=findViewById(R.id.signmail);
-
+        editLocX = findViewById(R.id.signLocX);
+        editLocY = findViewById(R.id.signLocY);
+        editBank = findViewById(R.id.signBank);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -84,8 +86,10 @@ public class activity_shopsignup extends AppCompatActivity {
                 String add= editAddress.getText().toString();
                 String phone = editPhone.getText().toString();
                 String email = editEmail.getText().toString();
+                String bank = editBank.getText().toString();
                 // 이메일 가져온다. 이메일 형식체크
-
+                String loc_x = editLocX.getText().toString();
+                String loc_y = editLocY.getText().toString();
                 Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
                 if(pattern.matcher(email).matches() == false){
                     Toast.makeText(activity_shopsignup.this
@@ -95,7 +99,7 @@ public class activity_shopsignup extends AppCompatActivity {
                 }
 
 
-                ShopAccount shop = new ShopAccount(name, pw, pw2, sname, add, phone, email);
+                ShopAccount shop = new ShopAccount(name,  email, pw, pw2, sname, phone, add, loc_x, loc_y, bank);
 
                 Call<ApiResponse> postCall = service.createShopAccount(shop);
                 postCall.enqueue(new Callback<ApiResponse>() {
@@ -138,10 +142,32 @@ public class activity_shopsignup extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        convertAddressButton = findViewById(R.id.convertAddressButton);
+        convertAddressButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_shopsignup.this, Geocoding.class);
+                startActivityForResult(intent, 1); // Request code 1로 Geocoding 액티비티 호출
+            }
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String latitude = data.getStringExtra("latitude");
+            String longitude = data.getStringExtra("longitude");
+
+            if (latitude != null && longitude != null) {
+                editLocX.setText(latitude);
+                editLocY.setText(longitude);
+            }
+        }
     }
 }
