@@ -49,50 +49,6 @@ public class bids_shop extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        orderAdapter = new OrderAdapter(new ArrayList<>(), new OrderAdapter.OnItemClickListener());
-        recyclerView.setAdapter(orderAdapter);
-        fetchQuestions();
-        // Sample data
-//        questionList = new ArrayList<>();
-//
-//        // Set up adapter
-//        questionAdapter = new OrderAdapter(questionList, new OrderAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Detail detail) {
-//                // Handle item click
-//                // 예를 들어, 클릭 시 주문 세부사항 화면으로 이동
-//                 Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
-//                 intent.putExtra("ORDER_ID", detail.getId());
-//                 startActivity(intent);
-//            }
-//        });
-//
-//        recyclerView.setAdapter(questionAdapter);
-    }
-    private void fetchQuestions() {
-        LoginApiService apiService = RetrofitClient.getApiService();
-        Call<ApiResponse> call = apiService.getOrderList();
-
-        call.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                Toast.makeText(bids_shop.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
-                if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse questionList = response.body();
-                    List<Detail> orders = questionList.getOrder_list();
-                    orderAdapter.updateOrders(orders);
-
-                } else {
-                    Toast.makeText(bids_shop.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Toast.makeText(bids_shop.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (view, insets) -> {
             // 하단 네비게이션 바 높이만큼 패딩 적용
@@ -126,5 +82,49 @@ public class bids_shop extends AppCompatActivity {
                 return false;
             }
         });
+//        orderAdapter = new OrderAdapter(new ArrayList<>(), new OrderAdapter.OnItemClickListener());
+        recyclerView.setAdapter(orderAdapter);
+        fetchQuestions();
+        // Sample data
+//        questionList = new ArrayList<>();
+//
+//        // Set up adapter
+//        questionAdapter = new OrderAdapter(questionList, new OrderAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Detail detail) {
+//                // Handle item click
+//                // 예를 들어, 클릭 시 주문 세부사항 화면으로 이동
+//                 Intent intent = new Intent(bids_shop.this, Bid_shop_detail.class);
+//                 intent.putExtra("ORDER_ID", detail.getId());
+//                 startActivity(intent);
+//            }
+//        });
+//
+//        recyclerView.setAdapter(questionAdapter);
+    }
+    private void fetchQuestions() {
+        LoginApiService apiService = RetrofitClient.getApiService();
+        Call<ApiResponse> call = apiService.getOrderList();
+
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                Toast.makeText(bids_shop.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                if (response.isSuccessful() ) {
+                    ApiResponse questionList = response.body();
+                    List<Detail> orders = questionList.getOrder_list();
+                    orderAdapter.updateOrders(orders);
+
+                } else {
+                    Toast.makeText(bids_shop.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(bids_shop.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

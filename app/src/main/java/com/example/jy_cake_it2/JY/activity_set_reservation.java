@@ -106,9 +106,6 @@ public class activity_set_reservation extends AppCompatActivity {
         }
 
 
-
-
-
         //케이크 이미지 (이전 페이지에서 설정한것) (DB에서 가져오기 or 이전 페이지에서 받아오기)
         cake_image = findViewById(R.id.cake_image);
 
@@ -138,11 +135,11 @@ public class activity_set_reservation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                EditText editsubject = findViewById(R.id.editID);
+            //    EditText editsubject = findViewById(R.id.editID);
                 EditText editcontent = findViewById(R.id.editPw);
-
+                String ssubject = cakeTypeStr + "/" + cakeShapeStr + "/" + cakeFlavorStr;
                 // RequestBody로 초기화
-                RequestBody subject = RequestBody.create(MediaType.parse("text/plain"), editsubject.getText().toString());
+                RequestBody subject = RequestBody.create(MediaType.parse("text/plain"), ssubject);
                 RequestBody content = RequestBody.create(MediaType.parse("text/plain"), editcontent.getText().toString());
                 RequestBody cakeType = RequestBody.create(MediaType.parse("text/plain"), cakeTypeStr);
                 RequestBody cakeShape = RequestBody.create(MediaType.parse("text/plain"), cakeShapeStr);
@@ -152,7 +149,7 @@ public class activity_set_reservation extends AppCompatActivity {
                 RequestBody lettering = RequestBody.create(MediaType.parse("text/plain"), letteringStr);
                 RequestBody shop_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(0));
                 // 로그를 통해 각 RequestBody에 담긴 데이터를 확인 (디버깅용)
-                Log.d("Debug", "Subject: " + editsubject.getText().toString());
+               // Log.d("Debug", "Subject: " + editsubject.getText().toString());
                 Log.d("Debug", "Content: " + editcontent.getText().toString());
                 Log.d("Debug", "Cake Type: " + cakeTypeStr);
                 Log.d("Debug", "Cake Shape: " + cakeShapeStr);
@@ -179,7 +176,7 @@ public class activity_set_reservation extends AppCompatActivity {
                         public void onResponse(Call<Detail> call, Response<Detail> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(activity_set_reservation.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(activity_set_reservation.this, activity_browse.class);
+                                Intent intent = new Intent(activity_set_reservation.this, activity_draw_cake.class);
                                 startActivity(intent);
                             } else {
                                 try {
@@ -205,9 +202,12 @@ public class activity_set_reservation extends AppCompatActivity {
         btn_find_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editsubject = findViewById(R.id.editID);
+
+         //       EditText editsubject = findViewById(R.id.editID);
                 EditText editcontent = findViewById(R.id.editPw);
-                RequestBody subject = RequestBody.create(MediaType.parse("text/plain"), editsubject.getText().toString());
+                String ssubject = cakeTypeStr + "/" + cakeShapeStr + "/" + cakeFlavorStr;
+                // RequestBody로 초기화
+                RequestBody subject = RequestBody.create(MediaType.parse("text/plain"), ssubject);
                 RequestBody content = RequestBody.create(MediaType.parse("text/plain"), editcontent.getText().toString());
                 RequestBody cakeType = RequestBody.create(MediaType.parse("text/plain"), cakeTypeStr);
                 RequestBody cakeShape = RequestBody.create(MediaType.parse("text/plain"), cakeShapeStr);
@@ -216,12 +216,8 @@ public class activity_set_reservation extends AppCompatActivity {
                 RequestBody pickupDate = RequestBody.create(MediaType.parse("text/plain"), pickupDateStr);
                 RequestBody lettering = RequestBody.create(MediaType.parse("text/plain"), letteringStr);
                 RequestBody shop_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(0));
-
-                RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imageFile);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
-
                 // 로그를 통해 각 RequestBody에 담긴 데이터를 확인 (디버깅용)
-                Log.d("Debug", "Subject: " + editsubject.getText().toString());
+          //      Log.d("Debug", "Subject: " + editsubject.getText().toString());
                 Log.d("Debug", "Content: " + editcontent.getText().toString());
                 Log.d("Debug", "Cake Type: " + cakeTypeStr);
                 Log.d("Debug", "Cake Shape: " + cakeShapeStr);
@@ -230,60 +226,52 @@ public class activity_set_reservation extends AppCompatActivity {
                 Log.d("Debug", "Pickup Date: " + pickupDateStr);
                 Log.d("Debug", "Lettering: " + letteringStr);
 
+                // 이미지 파일이 null인지 확인
+                if (imageFile == null || !imageFile.exists()) {
+                    Toast.makeText(activity_set_reservation.this, "Image file is missing", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imageFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
+
                 if (accessToken != null) {
                     Retrofit retrofit = RetrofitClient.getClient(accessToken);
                     LoginApiService apiService = retrofit.create(LoginApiService.class);
 
-                    //Detail detail = new Detail(subject, content, cake_type, cake_shape, cake_color, cake_flavor, pickup_date, lettering, shop_id);
-
-                    Call<Detail> call = apiService.createDetail("Bearer " + accessToken, subject,content, cakeType, cakeShape, cakeColor, cakeFlavor, pickupDate, lettering, shop_id, body );
+                    Call<Detail> call = apiService.createDetail("Bearer " + accessToken, subject, content, cakeType, cakeShape, cakeColor, cakeFlavor, pickupDate, lettering, shop_id, body);
                     call.enqueue(new Callback<Detail>() {
                         @Override
                         public void onResponse(Call<Detail> call, Response<Detail> response) {
                             if (response.isSuccessful()) {
-                                // 응답 성공 처리 로직
-//                        Detail detailResponse = response.body();
-//                        if (detailResponse != null) {
-                                // 성공 시의 처리 로직
-                                Detail detail = response.body();
-//                                int detailId = detail.getId();
                                 Toast.makeText(activity_set_reservation.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(activity_set_reservation.this, activity_browse.class);
-//                                intent.putExtra("DETAIL_ID", detailId);
+                                Intent intent = new Intent(activity_set_reservation.this, Shop_click.class);
                                 startActivity(intent);
-//                        } else {
-//                            Toast.makeText(Detail_Post_Exemple.this, "Response body is null"+response.code(), Toast.LENGTH_SHORT).show();
-//                        }
                             } else {
-                                // 응답 실패 처리 로직
-                                Toast.makeText(activity_set_reservation.this, "Fail:"+response.code(), Toast.LENGTH_SHORT).show();
-//                                try {
-//                                    // 서버가 반환한 오류 메시지 확인
-////                                    String errorBody = response.errorBody().string();
-//                                    Toast.makeText(activity_draw_cake.this, "Error message: ", Toast.LENGTH_LONG).show();
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
+                                try {
+                                    String errorMessage = response.errorBody().string();
+                                    Toast.makeText(activity_set_reservation.this, "Fail: " + response.code() + ", " + errorMessage, Toast.LENGTH_LONG).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Detail> call, Throwable t) {
-                            // 네트워크 실패 처리 로직
                             Toast.makeText(activity_set_reservation.this, "Network error", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 } else {
                     Toast.makeText(activity_set_reservation.this, "No Access Token found", Toast.LENGTH_SHORT).show();
                 }
+            }
 
 
                 // Retrofit을 통해 서버로 데이터 전송
 //                if (year >= 2024 && 7 < hour && hour < 20){
 //                    sendReservationDataToServer(cake_image, year, month, day, hour, min);
 //                }
-            }
+
             public int getDetailId() {
                 return detailId;
             }

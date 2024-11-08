@@ -2,6 +2,6 @@
 <resources>
     <string-array name="cake_shape">
         <item>원형</item>
-        <item>직사각형</item>
+        <item>사각형</item>
     </string-array>
 </resources>

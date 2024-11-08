@@ -46,6 +46,7 @@ public class user_order_detail extends AppCompatActivity {
     private List<Bids> bidsList = new ArrayList<>();
     private TextView userTextView, modifyDateTextView, typeTextView, shapeTextView, colorTextView, flavorTextView, pickupDateTextView, letteringTextView, statusTextView,shopTextView;
     private int question_id;
+    private Button paymentButton;
     ImageView cakeImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,13 @@ public class user_order_detail extends AppCompatActivity {
             return insets;
         });
         TextView btn1 = findViewById(R.id.paymentButton);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(user_order_detail.this, activity_browse.class);
-                startActivity(intent);
-            }
-        });
+//        btn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(user_order_detail.this, activity_browse.class);
+//                startActivity(intent);
+//            }
+//        });
         // TextView 초기화
         cakeImage = findViewById(R.id.cake_image);
         contentTextView = findViewById(R.id.contentTextView);
@@ -77,6 +78,7 @@ public class user_order_detail extends AppCompatActivity {
         letteringTextView = findViewById(R.id.letteringTextView);
         statusTextView = findViewById(R.id.statusTextView);
         shopTextView = findViewById(R.id.shopTextView);
+        paymentButton=findViewById(R.id.paymentButton);;
 
         // RecyclerView 초기화 및 어댑터 설정
         recyclerView = findViewById(R.id.answerRecyclerView);
@@ -133,13 +135,13 @@ public class user_order_detail extends AppCompatActivity {
         });
 
         dialog.show();
-        Button paymentButton=findViewById(R.id.paymentButton);;
-        paymentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(user_order_detail.this, "대상 가게의 페이지에서 계좌번호를 확인하고 입금하세요. " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+//        paymentButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(user_order_detail.this, "대상 가게의 페이지에서 계좌번호를 확인하고 입금하세요. " + bid.getShop().getShopname(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         dialog.show();
     }
@@ -190,7 +192,7 @@ public class user_order_detail extends AppCompatActivity {
 //                    }
 //                }
 //                @Override
-//                public void onFailure(Call<ChangeStatus> call, Throwable t) {
+//                public void onFailure(Call<ChangeㅂㅈStatus> call, Throwable t) {
 //                    Toast.makeText(Bid_user_detail.this, "실패", Toast.LENGTH_SHORT).show();
 //                }
 //            });
@@ -217,8 +219,12 @@ public class user_order_detail extends AppCompatActivity {
                     } else {
                         recyclerView.setVisibility(View.GONE); // 그 외의 경우 숨기기
                     }
+                    if (orderDetail.getOrderStatus() == 33) {
+                        paymentButton.setVisibility(View.VISIBLE); // 주문 코드가 20번일 경우 보이게 설정
+                    } else {
+                        paymentButton.setVisibility(View.GONE); // 그 외의 경우 숨기기
+                    }
                     // 세부 사항 업데이트
-                    subjectTextView.setText("subject : " + orderDetail.getSubject());
                     contentTextView.setText("content : " + orderDetail.getContent());
                     createDateTextView.setText("create_date : " + orderDetail.getCreateDate());
 
@@ -233,26 +239,20 @@ public class user_order_detail extends AppCompatActivity {
                     params.height = totalHeight;
                     recyclerView.setLayoutParams(params);
 
-                    userTextView.setText("주문자 이름 : " + orderDetail.getUser().getUsername());
+//                    userTextView.setText("주문자 이름 : " + orderDetail.getUser().getUsername());
                     typeTextView.setText("케이크 크기 : " + orderDetail.getCakeType());
                     shapeTextView.setText("케이크 모양 : " + orderDetail.getCakeShape());
                     colorTextView.setText("케이크 색 : " + orderDetail.getCakeColor());
                     flavorTextView.setText("맛 : " + orderDetail.getCakeFlavor());
                     pickupDateTextView.setText("픽업 날짜 : " + orderDetail.getPickupDate());
                     letteringTextView.setText("레터링 : " + orderDetail.getLettering());
-                    shopTextView.setText("가게 : " + orderDetail.getShopId());
+
+                    fetchshopId(orderDetail.getShopId());
                     fetchCakeImage(orderDetail.getCakeIMG());
 
 //                    cakeImage.setImageBitmap(response.body());
 //                    cakeImage.getDrawable();
 
-                } else if (response.code() == 307) {
-                    String newLocation = response.raw().header("Location");
-                    if (newLocation != null) {
-                        subjectTextView.setText("Temporary redirect to: " + newLocation);
-                    } else {
-                        subjectTextView.setText("Temporary redirect, but no new location provided");
-                    }
                 }
             }
 
@@ -261,6 +261,38 @@ public class user_order_detail extends AppCompatActivity {
                 Toast.makeText(user_order_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private  void fetchshopId(int ShopId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("AccessToken", null);
+        if (accessToken != null) {
+            Retrofit retrofit = RetrofitClient.getClient(accessToken);
+            LoginApiService apiService = retrofit.create(LoginApiService.class);
+            Call<StoreInfoResponse> call = apiService.getStorename("Bearer " + accessToken, ShopId);
+
+            call.enqueue(new Callback<StoreInfoResponse>() {
+                @Override
+                public void onResponse(Call<StoreInfoResponse> call, Response<StoreInfoResponse> response) {
+                    Toast.makeText(user_order_detail.this, "code: " + response.code(), Toast.LENGTH_LONG).show();
+                    if (response.isSuccessful() && response.body() != null) {
+                        StoreInfoResponse userInfo = response.body();
+                        if (ShopId == 0){
+                            shopTextView.setVisibility(View.GONE);
+                        }else{
+                            shopTextView.setText("가게 : " + userInfo.getShopname());
+                        }
+
+                    } else {
+                        Toast.makeText(user_order_detail.this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StoreInfoResponse> call, Throwable t) {
+                    Toast.makeText(user_order_detail.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
     private void fetchCakeImage(String imageFileName) {
         Retrofit retrofit = new Retrofit.Builder()

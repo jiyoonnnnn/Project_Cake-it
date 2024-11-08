@@ -113,20 +113,7 @@
                 android:text="Lettering"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp"/>
-            <TextView
-                android:id="@+id/shopTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="shop"
-                android:textSize="20sp"
-                android:layout_marginBottom="18dp"/>
-            <TextView
-                android:id="@+id/statusTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="상태"
-                android:textSize="20sp"
-                android:layout_marginBottom="8dp"/>
+
             <TextView
                 android:id="@+id/contentTextView"
                 android:layout_width="wrap_content"

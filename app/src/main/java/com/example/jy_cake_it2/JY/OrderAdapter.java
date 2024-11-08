@@ -49,7 +49,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.QuestionView
     public void updateOrders(List<Detail> newOrderList) {
         this.questionList.clear();
         this.questionList.addAll(newOrderList);
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, newOrderList.size());
     }
 
     public static class QuestionViewHolder extends RecyclerView.ViewHolder {

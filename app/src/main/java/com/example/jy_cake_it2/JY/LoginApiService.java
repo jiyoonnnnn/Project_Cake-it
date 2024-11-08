@@ -49,6 +49,8 @@ public interface LoginApiService {
     Call<UserInfoResponse> getUserInfo(@Header("Authorization") String authHeader);
     @GET("api/shop/mypage")
     Call<StoreInfoResponse> getStoreInfo(@Header("Authorization") String authHeader);
+    @GET("api/shop/mypage/{shop_id}")
+    Call<StoreInfoResponse> getStorename(@Header("Authorization") String authHeader, @Path("shop_id") int shop_id);
     @POST("api/user/create") // POST 요청
     Call<ApiResponse> createAccount(@Body UserAccount user);
     @POST("api/shop/create") // POST 요청

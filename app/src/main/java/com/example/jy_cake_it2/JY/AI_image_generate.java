@@ -143,7 +143,7 @@ public class AI_image_generate extends AppCompatActivity {
         RequestBody requestBody = RequestBody.create(jsonBody.toString(), JSON);
         Request request = new Request.Builder()
                 .url("https://api.openai.com/v1/images/generations")
-                .header("Authorization", "Bearer sk-Fac6rIcqTqacbFW9arvx8x6XtJXNxBUMJB3q0mrZjkT3BlbkFJLr2S3_5Pl_GE6vzB5-fECkd5vEjezuQ2NEV2zmQF4A")
+                .header("Authorization", "write your token")
                 .post(requestBody)
                 .build();
 

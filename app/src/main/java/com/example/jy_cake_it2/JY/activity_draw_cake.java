@@ -75,6 +75,19 @@ public class activity_draw_cake extends AppCompatActivity {
         default_color = ContextCompat.getColor(activity_draw_cake.this, R.color.light_pink);
         //WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         //EdgeToEdge.enable(this);
+// circle_drawble과 square_drawble 초기화
+        circle_drawble = (GradientDrawable) ContextCompat.getDrawable(this, R.drawable.circle_shape).mutate();
+        square_drawble = (GradientDrawable) ContextCompat.getDrawable(this, R.drawable.rectangle_shape).mutate();
+        circle_drawble.setColor(default_color);
+        square_drawble.setColor(default_color);
+
+        // ImageView와 Background 연결
+        circle = findViewById(R.id.circle);
+        square = findViewById(R.id.rectangle);
+        circle.setBackground(circle_drawble);
+        square.setBackground(square_drawble);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_draw_cake);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -119,7 +132,7 @@ public class activity_draw_cake extends AppCompatActivity {
             public void onClick(View view) {
                 // 주문하기 버튼 클릭 이벤트 처리
                 // 이미지, 각 스피너에 있는 데이터들 모아놨다 마지막에 전송 + 케이크 이미지 가져오기
-                String cake_type = "1호";
+                String cake_type = spnSize.getSelectedItem().toString();
                 String cake_shape = spnShape.getSelectedItem().toString();
                 String cake_color = "보이는 것과 맞는 색";
                 String cake_flavor = spnTaste.getSelectedItem().toString();
@@ -211,35 +224,22 @@ public class activity_draw_cake extends AppCompatActivity {
                 galleryLauncher.launch(galleryIntent);
             }
         });
-        circle = findViewById(R.id.circle);
-        square = findViewById(R.id.rectangle);
+//        circle = findViewById(R.id.circle);
+//        square = findViewById(R.id.rectangle);
         spnShape = findViewById(R.id.spn_shape);
         String[] cake_shapes = getResources().getStringArray(R.array.cake_shape);
         ArrayAdapter<String> cakeShapeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, cake_shapes);
         spnShape.setAdapter(cakeShapeAdapter);
-
         spnShape.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                switch (position) {
-                    case 0:
-                        findViewById(R.id.circle).setVisibility(View.VISIBLE);
-                        findViewById(R.id.rectangle).setVisibility(View.GONE);
-
-                        break;
-                    case 1:
-                        findViewById(R.id.circle).setVisibility(View.GONE);
-                        findViewById(R.id.rectangle).setVisibility(View.VISIBLE);
-                        break;
-
-                }
-
+                updateShapeImageView();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                findViewById(R.id.circle).setVisibility(View.VISIBLE);
-                findViewById(R.id.rectangle).setVisibility(View.GONE);
+                circle.setVisibility(View.VISIBLE);
+                square.setVisibility(View.GONE);
             }
         });
         btn_refresh = findViewById(R.id.btn_refresh);
@@ -249,7 +249,8 @@ public class activity_draw_cake extends AppCompatActivity {
                 recreate();
             }
         });
-        // Spinner 초기화
+
+        //컬러픽커 사용
         btnColorPicker = findViewById(R.id.color_sel_btn);
         btnColorPicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,6 +340,7 @@ public class activity_draw_cake extends AppCompatActivity {
                 // 아무것도 선택되지 않았을 때 처리할 내용
             }
         });
+
         spnSize = findViewById(R.id.spn_size);
         String[] cake_size = getResources().getStringArray(R.array.cake_size);
         ArrayAdapter<String> cakeSizeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, cake_size);
@@ -366,7 +368,10 @@ public class activity_draw_cake extends AppCompatActivity {
                 // 아무것도 선택되지 않았을 때 처리할 내용
             }
         });
+
     }
+
+    //컬러픽커 사용 함수
     public void openColorPicker() {
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, default_color, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -380,14 +385,14 @@ public class activity_draw_cake extends AppCompatActivity {
                 selected_color = color;
                 circle_drawble.setColor(default_color);
                 square_drawble.setColor(default_color);
-                GradientDrawable circleDrawableNew = (GradientDrawable) ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_shape).mutate();
-                GradientDrawable squareDrawableNew = (GradientDrawable) ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_shape).mutate();
+//                GradientDrawable circleDrawableNew = (GradientDrawable) ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_shape).mutate();
+//                GradientDrawable squareDrawableNew = (GradientDrawable) ContextCompat.getDrawable(getApplicationContext(), R.drawable.rectangle_shape).mutate();
 
-                circleDrawableNew.setColor(color);
-                squareDrawableNew.setColor(color);
-
-                circle.setImageDrawable(circleDrawableNew);
-                square.setImageDrawable(squareDrawableNew);
+//                circleDrawableNew.setColor(color);
+//                squareDrawableNew.setColor(color);
+//
+//                circle.setImageDrawable(circleDrawableNew);
+//                square.setImageDrawable(squareDrawableNew);
 
                 // 강제로 UI를 다시 그립니다.
                 circle.invalidate();
@@ -396,6 +401,8 @@ public class activity_draw_cake extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    //이미지 뷰 현재 상태 base64문자열로 변환하는 코드
     public String imgViewToBase64(ImageView imageView) {
         //imageview 에서  drawable 객체를 가져와 BitmapDrawble  로 캐스팅
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
@@ -411,6 +418,9 @@ public class activity_draw_cake extends AppCompatActivity {
         //bytearray를 base64로 인코딩 하여 문자열로 변환후 반환
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
+    //shape drawble은 bitmap으로 변환해도 제대로 나오지 않음
+    //canvas로 도형 모양을 포함 내부의 색, 텍스트 까지 새로 그려서 해당 부분을 bitmap화
     public Bitmap getBitmapWithShapeAndText(ImageView imageView, String text, int shapeColor, Typeface selected_font) {
         // circle, square을 포함하는 ImageView의 크기와 동일한 비트맵 생성
         Bitmap bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
@@ -453,6 +463,7 @@ public class activity_draw_cake extends AppCompatActivity {
 
         return bitmap;  // 최종 비트맵 반환
     }
+
     public void saveBitmapAndPassBitmap(ImageView imageView, String description, String text, int shapeColor, Typeface selectedFont, Intent intent) {
         // `getBitmapWithShapeAndText`로부터 Bitmap 생성
         Bitmap bitmap = getBitmapWithShapeAndText(imageView, text, shapeColor, selectedFont);
@@ -469,6 +480,7 @@ public class activity_draw_cake extends AppCompatActivity {
             Log.e("Error", "Failed to save bitmap as file.");
         }
     }
+
     public String saveBitmapAsFile(Bitmap bitmap) {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String fileName = "cake_img_" + System.currentTimeMillis() + ".jpg";
@@ -484,6 +496,7 @@ public class activity_draw_cake extends AppCompatActivity {
             return null;
         }
     }
+    // 갤러리에서 가져온 이미지로 원형 또는 사각형 뷰를 업데이트하는 메서드
     private void updateShapeImageView() {
         if (selectedImageUri != null) { // 이미지가 선택된 경우에만 업데이트
             if (spnShape.getSelectedItem().toString().equals("원형")) {
@@ -515,3 +528,4 @@ public class activity_draw_cake extends AppCompatActivity {
         }
     }
 }
+

@@ -3,10 +3,13 @@ package com.example.jy_cake_it2.JY;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,9 @@ import com.example.jy_cake_it2.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.InputStream;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +39,6 @@ public class Bid_shop_detail extends AppCompatActivity {
     private TextView contentTextView;
     private TextView createDateTextView;
     private TextView userTextView;
-    private TextView modifyDateTextView;
     private TextView typeTextView;
     private TextView shapeTextView;
     private TextView colorTextView;
@@ -42,7 +47,7 @@ public class Bid_shop_detail extends AppCompatActivity {
     private TextView letteringTextView;
     private int question_id;
     Button btn_bids;
-
+    ImageView cakeImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +58,8 @@ public class Bid_shop_detail extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        //ㄴㅅidTextView = findViewById(R.id.idTextView);
+        cakeImage = findViewById(R.id.cake_image);
+        //idTextView = findViewById(R.id.idTextView);
         contentTextView = findViewById(R.id.contentTextView);
         createDateTextView = findViewById(R.id.createDateTextView);
         userTextView = findViewById(R.id.userTextView);
@@ -87,7 +92,7 @@ public class Bid_shop_detail extends AppCompatActivity {
         call.enqueue(new Callback<Detail>() {
             @Override
             public void onResponse(Call<Detail> call, Response<Detail> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     Detail orderDetail = response.body();
                     contentTextView.setText("요청사항 : " + orderDetail.getContent());
                     createDateTextView.setText("주문 생성 날짜 : " + orderDetail.getCreateDate());
@@ -98,18 +103,11 @@ public class Bid_shop_detail extends AppCompatActivity {
                     flavorTextView.setText("맛 : " + orderDetail.getCakeFlavor());
                     pickupDateTextView.setText("픽업 날짜 : " + orderDetail.getPickupDate());
                     letteringTextView.setText("레터링 : " + orderDetail.getLettering());
+                    fetchCakeImage(orderDetail.getCakeIMG());
 
                 } else if (response.code() == 307) {
                     // 임시 리디렉션 응답을 받은 경우, 새로운 위치로 재시도
                     String newLocation = response.raw().header("Location");
-                    if (newLocation != null) {
-                        // 새로운 위치로 재시도
-                        // newLocation에 있는 URL로 다시 요청을 보내야 합니다.
-                        subjectTextView.setText("Temporary redirect to: " + newLocation);
-                    } else {
-                        // 새로운 위치가 제공되지 않은 경우에 대한 처리
-                        subjectTextView.setText("Temporary redirect, but no new location provided");
-                    }
                 }
             }
 
@@ -165,5 +163,33 @@ public class Bid_shop_detail extends AppCompatActivity {
         });
 
 
+    }
+    private void fetchCakeImage(String imageFileName) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://132.145.80.50:9999/")
+                .build();
+
+        LoginApiService apiService = retrofit.create(LoginApiService.class);
+
+        Call<ResponseBody> imageCall = apiService.getImage(imageFileName);
+        imageCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // 비트맵으로 변환
+                    InputStream inputStream = response.body().byteStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    //Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    cakeImage.setImageBitmap(bitmap);
+                } else {
+                    Toast.makeText(Bid_shop_detail.this, "이미지를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Bid_shop_detail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

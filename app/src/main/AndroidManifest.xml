@@ -24,6 +24,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="30">
         <activity
+            android:name=".JY.user_shop_home"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Shop_click"
+            android:exported="false" />
+        <activity
             android:name=".JY.Shop_page"
             android:exported="false" />
         <activity
