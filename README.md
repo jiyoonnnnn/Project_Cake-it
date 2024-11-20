@@ -13,6 +13,10 @@
 * 이미지 저장 버튼을 클릭하면 사진첩에 관한 접근 권한을 요청합니다.
 * 권한 요청을 수락하면 갤러리에 케이크 이미지가 저장됩니다.
 
+### 입찰
+* 소비자가 케이크의 견적을 요청하고, 다양한 가게들이 견적을 제시할 수 있습니다.
+* 소비자는 여러 가게들의 견적을 확인한 후, 낙찰을 하고 케이크 제작 요청을 할 수 있습니다.
+
 ### 픽업시간 설정, 주문 제목과 요청사항 입력
 
 ### 가게 둘러보기 화면
@@ -39,10 +43,11 @@
 * picasso
 * Java
 * Python
-  
+![스크린샷 2024-11-06 094340](https://github.com/user-attachments/assets/23d90a12-7574-44e9-972f-746caafc9ea8)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/a238fa3c-3312-4aee-870a-c479d1bb0db6)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/042a21e4-857b-4f2f-a3ff-2df35842bd53)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/8af4a5eb-7a68-4afb-81a4-348001b2b8af)
+
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/461606ae-d34c-48a6-9f3d-7903858f3cea)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/747c876b-9337-4f59-a6c5-548854fce084)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/88086858-6ba6-457f-bc5f-90541833d89b)
