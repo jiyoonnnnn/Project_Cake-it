@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".JY.activity_draw_cake">
+
+    <!-- 좌측 상단에 고정할 Back 버튼 -->
+
+    <!-- 중앙에 텍스트 배치 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/ai_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI로 그리는"
+            android:textSize="10pt"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/ai_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나만의 케이크"
+            android:textSize="15pt"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- 케이크 이미지 영역 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:id="@+id/rectangle"
+            android:layout_margin="10dp"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:layout_gravity="center"
+            android:src="@color/light_gray"/>
+    </FrameLayout>
+
+    <!-- 버튼 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btn_generate_ai_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/light_pink"
+            android:text="이미지 생성" />
+        <Button
+            android:id="@+id/btn_save_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/light_pink"
+            android:text="이미지 저장" />
+    </LinearLayout>
+
+    <!-- 입력란 -->
+    <EditText
+        android:id="@+id/image_text"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="원하는 케이크의 특징을 입력해주세요" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_pink"
+        android:layout_margin="20dp"
+        android:text="뒤로 가기"/>
+    <!-- 진행바 -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/light_pink" />
+
+</LinearLayout>

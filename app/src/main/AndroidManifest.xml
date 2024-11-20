@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_cakeit"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_cakeit_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.JY_Cake_it2"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="30">
+        <activity
+            android:name=".JY.user_shop_home"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Shop_click"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Shop_page"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Activity_my_page_store"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Activity_my_page"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Shop_order_detail"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Bid_shop_detail"
+            android:exported="false" />
+        <activity
+            android:name=".JY.user_order_detail"
+            android:exported="false" />
+        <activity
+            android:name=".JY.bids_shop"
+            android:exported="false" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="c78ktzoog4" />
+        <activity
+            android:name=".JY.activity_set_reservation"
+            android:exported="false" />
+        <activity
+            android:name=".JY.activity_draw_cake"
+            android:exported="false" />
+        <activity
+            android:name=".JY.shop_order"
+            android:exported="false" />
+        <activity
+            android:name=".JY.user_order"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="c78ktzoog4" />
+
+        <activity
+            android:name=".JY.activity_shopsignup"
+            android:exported="false" />
+        <activity
+            android:name=".JY.LoginShop"
+            android:exported="false" />
+        <activity
+            android:name=".JY.activity_browse"
+            android:exported="false" />
+        <activity
+            android:name=".JY.activity_signup"
+            android:exported="false" />
+        <activity
+            android:name=".JY.AI_image_generate"
+            android:exported="false" />
+        <activity
+            android:name=".JY.Login_main"
+            android:exported="true"
+            android:label="JY_Cake_it2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".JY.DetailActivity1" />
+        <activity android:name=".JY.Geocoding" />
+    </application>
+
+</manifest>

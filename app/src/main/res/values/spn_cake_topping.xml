@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cake_topping">
+        <item>딸기</item>
+        <item>산타</item>
+        <item>리본</item>
+        <item>크림 1</item>
+        <item>크림 2</item>
+    </string-array>
+</resources>

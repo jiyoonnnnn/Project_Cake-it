@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cake_letter_shape">
+        <item>한영 글씨체 1</item>
+        <item>한영 글씨체 2</item>
+        <item>영어 only 1</item>
+        <item>영어 only 2</item>
+    </string-array>
+</resources>
