@@ -43,11 +43,13 @@
 * picasso
 * Java
 * Python
+
+
 ![스크린샷 2024-11-06 094340](https://github.com/user-attachments/assets/23d90a12-7574-44e9-972f-746caafc9ea8)
+![스크린샷 2024-11-06 211613](https://github.com/user-attachments/assets/63d58d90-d9db-494f-8ace-51b35d01bb13)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/a238fa3c-3312-4aee-870a-c479d1bb0db6)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/042a21e4-857b-4f2f-a3ff-2df35842bd53)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/8af4a5eb-7a68-4afb-81a4-348001b2b8af)
-
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/461606ae-d34c-48a6-9f3d-7903858f3cea)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/747c876b-9337-4f59-a6c5-548854fce084)
 ![image](https://github.com/jiyoonnnnn/Project_Cake-it/assets/113495041/88086858-6ba6-457f-bc5f-90541833d89b)
